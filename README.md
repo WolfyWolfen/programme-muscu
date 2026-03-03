@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 1.5** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 1.6** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -59,8 +59,21 @@ Toutes les données sont stockées **localement sur votre appareil** (localStora
 ## 🔄 Mettre à jour l'application (pour les développeurs)
 
 1. Modifier le code source (`app.js`, `style.css`, `index.html`...)
-2. Ouvrir `sw.js` et incrémenter `CACHE_NAME` (ex: `v1.5` → `v1.6`)
+2. Ouvrir `sw.js` et incrémenter `CACHE_NAME` (ex: `v1.6` → `v1.7`)
 3. Faire de même pour `APP_VERSION` dans `app.js`
 4. `git add . && git commit -m "Version X.Y" && git push`
 
 Les utilisateurs recevront la mise à jour automatiquement au prochain lancement de l'application.
+
+---
+
+## 📜 Historique des versions (Changelog)
+
+- **v1.6** : Correction du crash écran blanc au rechargement (F5) lié à la *Temporal Dead Zone* du navigateur (`ReferenceError` sur `APP_VERSION`).
+- **v1.5** : Désactivation du `pull-to-refresh` Android natif (`overscroll-behavior: none`) pour empêcher la recharge accidentelle et la perte d'état en glissant vers le bas.
+- **v1.4** : Audit de code. Correction d'un bug où les listeners de navigation pouvaient se dupliquer suite à de multiples appels d'initialisation.
+- **v1.3** : Ajout de la mécanique de mise à jour transparente du Service Worker (`skipWaiting` et `clients.claim`). Plus besoin de fermer l'app manuellement pour appliquer une nouvelle version !
+- **v1.2** : Affichage dynamique de la version (`vX.Y`) en bas de l'écran Programme et refonte de la gestion du cache SW.
+- **v1.1** : Ajout des guides d'installation officiels (MANUEL_IOS, MANUEL_ANDROID) et premières métadonnées PWA (`manifest.json`, icones).
+- **v1.0** : Lancement initial. Programme 5 jours, timers, isolations localStorage multi-profils et stockage hors-ligne basique.
+
