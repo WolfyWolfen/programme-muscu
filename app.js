@@ -171,6 +171,8 @@ let historyData = [];
 // =============================================
 // INITIALISATION
 // =============================================
+let listenersInitialized = false;
+
 function initApp() {
     historyData = JSON.parse(localStorage.getItem(getKey('my_workout_history'))) || [];
 
@@ -186,14 +188,18 @@ function initApp() {
         document.querySelector('.header-content').appendChild(profileBtn);
     }
 
-    navBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const view = e.currentTarget.dataset.view;
-            switchView(view);
+    // Ajouter les listeners une seule fois (protection contre double-init)
+    if (!listenersInitialized) {
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const view = e.currentTarget.dataset.view;
+                switchView(view);
+            });
         });
-    });
+        backBtn.addEventListener('click', () => switchView('home'));
+        listenersInitialized = true;
+    }
 
-    backBtn.addEventListener('click', () => switchView('home'));
     switchView('home');
 }
 
@@ -249,7 +255,7 @@ function estimateDay(dayId) {
     return `~${min} min`;
 }
 
-const APP_VERSION = "v1.3";
+const APP_VERSION = "v1.4";
 
 function renderHome() {
     let html = '';
