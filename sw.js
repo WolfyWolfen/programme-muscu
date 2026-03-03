@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-programme-v1.6';
+const CACHE_NAME = 'mon-programme-v1.7';
 const urlsToCache = [
     './',
     './index.html',
@@ -22,11 +22,24 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                // Retourner le cache si dispo, sinon aller chercher sur le réseau
-                return response || fetch(event.request);
-            })
+        caches.match(event.request).then(cachedResponse => {
+            const fetchPromise = fetch(event.request).then(networkResponse => {
+                // Mettre à jour le cache de façon transparente
+                if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+                    const responseToCache = networkResponse.clone();
+                    caches.open(CACHE_NAME).then(cache => {
+                        cache.put(event.request, responseToCache);
+                    });
+                }
+                return networkResponse;
+            }).catch(() => {
+                // Si hors-ligne, on ne fait rien de plus (on a déjà le cache ou l'erreur réseau habituelle)
+            });
+
+            // On retourne le cache TOUT DE SUITE s'il existe (ultra-rapide), 
+            // SINON on attend la réponse réseau (1ère visite)
+            return cachedResponse || fetchPromise;
+        })
     );
 });
 
