@@ -20,15 +20,21 @@ Application web progressive (PWA) de suivi d'entraînement musculaire. Accessibl
 
 ---
 
-## 📱 Installation
+## 📱 Comment installer l'application (PWA)
 
-### 🤖 Android (Chrome) — [Guide complet](MANUEL_ANDROID.md)
-1. Ouvrir l'URL dans **Chrome**
-2. Menu ⋮ → *Ajouter à l'écran d'accueil*
+Cette application n'est pas sur les stores classiques (Play Store / App Store). Il s'agit d'une **Progressive Web App (PWA)**. Vous l'installez directement depuis votre navigateur, et elle se comportera ensuite 100% comme une application native (icône sur l'écran d'accueil, plein écran, hors-ligne).
 
-### 🍎 iOS (Safari) — [Guide complet](MANUEL_IOS.md)
-1. Ouvrir l'URL dans **Safari** (pas Chrome)
-2. Icône Partager 📤 → *Sur l'écran d'accueil*
+### 🤖 Android (Recommandé avec Chrome) — [Voir le guide illustré](MANUEL_ANDROID.md)
+1. Ouvrez ce lien dans **Chrome** sur votre téléphone : [https://wolfywolfen.github.io/programme-muscu/](https://wolfywolfen.github.io/programme-muscu/)
+2. Appuyez sur les **3 petits points ⋮** en haut à droite du navigateur.
+3. Appuyez sur **Ajouter à l'écran d'accueil** (ou "Installer l'application").
+4. Confirmez, et l'icône "Mon Programme" s'ajoutera à vos applications !
+
+### 🍎 iOS (Obligatoire avec Safari) — [Voir le guide illustré](MANUEL_IOS.md)
+1. Ouvrez ce lien **uniquement dans Safari** (l'installation PWA est bloquée par Apple sur les autres navigateurs) : [https://wolfywolfen.github.io/programme-muscu/](https://wolfywolfen.github.io/programme-muscu/)
+2. Appuyez sur le bouton **Partager** 📤 (le carré avec la flèche vers le haut, en bas de l'écran).
+3. Faites défiler vers le bas et appuyez sur **Sur l'écran d'accueil** (bouton avec un petit "+" encadré).
+4. Appuyez sur **Ajouter** en haut à droite. L'app est maintenant installée !
 
 ---
 
