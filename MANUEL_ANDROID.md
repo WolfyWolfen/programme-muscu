@@ -1,0 +1,68 @@
+# 📱 Guide d'Installation et d'Utilisation : Android
+
+Votre programme de musculation fonctionne comme une **vraie application native** sur votre téléphone Android grâce à la technologie PWA (Progressive Web App). Cela signifie qu'elle s'installe sur votre écran d'accueil, s'ouvre en plein écran sans le navigateur autour, et fonctionne **100 % hors-ligne** (sans connexion internet).
+
+Voici comment procéder en 3 étapes simples.
+
+---
+
+## 🛠 Partie 1 : Installer l'application (Une seule fois)
+
+L'installation ne passe pas par le Google Play Store, mais directement depuis Google Chrome.
+
+1. **Ouvrez Google Chrome** sur votre téléphone.
+2. Accédez au lien de l'application : [https://wolfywolfen.github.io/programme-muscu/](https://wolfywolfen.github.io/programme-muscu/)
+3. Une fois la page chargée, Chrome affichera probablement un bandeau en bas **"Ajouter Mon Programme à l'écran d'accueil"**. Touchez-le.
+4. *Si le bandeau ne s'affiche pas :* Touchez les **3 petits points (⋮)** en haut à droite de Chrome, puis cherchez **"Ajouter à l'écran d'accueil"** ou **"Installer l'application"**.
+5. Validez l'installation.
+
+✅ **C'est fait !** L'application "Mon Programme" s'affiche maintenant sur votre écran d'accueil avec son logo, exactement comme une application téléchargée sur le Play Store. **Vous pouvez fermer Chrome, vous n'en aurez plus besoin.**
+
+---
+
+## 👤 Partie 2 : Premier lancement (Création du profil)
+
+Au tout premier lancement de l'application depuis votre écran d'accueil :
+
+1. L'application va vous demander d'entrer **votre prénom**.
+2. Cela sert à créer votre **espace personnel isolé**.
+3. Les données ne sont envoyées à aucun serveur (tout reste dans votre téléphone), mais si plusieurs personnes utilisent ce même téléphone, les données ne se mélangeront pas.
+4. *(Note : Vous pouvez changer d'utilisateur à tout moment en touchant votre prénom en haut à droite de l'écran d'accueil de l'application).*
+
+---
+
+## 🏋️‍♂️ Partie 3 : Comment utiliser l'application à la salle
+
+### 1. Démarrer une séance
+* Sur l'écran d'accueil, touchez le jour correspondant (ex: *Lundi — Pecs & Triceps*).
+* Le "Chrono de séance" s'affiche en haut. Touchez **▶** pour lancer le chronomètre global de votre entraînement.
+
+### 2. Pendant l'entraînement
+* Vous voyez la liste de vos exercices.
+* **Série terminée ?** Entrez le *Poids* (KG) et les *Répétitions* (REPS), puis touchez l'**icône de cercle vide ◯** à droite.
+* Le cercle se valide (✓) et **le chronomètre de repos se lance automatiquement** en bas de l'écran !
+* *Note : Le temps de repos est intelligent. Il lance 2 min pour un effort lourd (Squat, Développé couché), 1min30 pour du moyen, et 1 min pour de l'isolation (Biceps...).*
+
+### 3. Ajuster le chrono
+* Le chrono s'affiche en bas. Vous pouvez ajouter **+10s** ou retirer **-10s** en touchant les boutons.
+* Quand il arrive à zéro, un **BIP sonore** retentit. *(Assurez-vous que le volume média de votre téléphone n'est pas silencieux).*
+
+### 4. Terminer la séance
+* En bas de page, touchez **"Terminer & Sauvegarder"**.
+* Le chrono de séance s'arrête net, et toutes vos séries (ainsi que la durée totale de votre entraînement) sont enregistrées dans votre Historique.
+
+### 5. La magie de la séance suivante
+* La semaine prochaine, quand vous rouvrirez le "Lundi", **l'application aura pré-rempli vos charges et vos répétitions de la semaine dernière !** Vous saurez exactement ce que vous devez battre ! 💥
+
+---
+
+## 🗑 Partie 4 : Gérer son Historique
+* Dans le menu du bas, touchez la deuxième icône ("Historique").
+* Vous y verrez toutes vos séances passées avec le détail des séries, le volume total (en KG) soulevé, et la durée.
+* Une erreur ? Vous pouvez supprimer :
+  * Une **série isolée**
+  * Un **exercice entier**
+  * La **séance complète** (en touchant la grosse poubelle en haut de la carte)
+
+---
+*Bon entraînement !* 💪
