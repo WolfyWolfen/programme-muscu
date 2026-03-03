@@ -249,7 +249,7 @@ function estimateDay(dayId) {
     return `~${min} min`;
 }
 
-const APP_VERSION = "v1.2";
+const APP_VERSION = "v1.3";
 
 function renderHome() {
     let html = '';
