@@ -249,6 +249,8 @@ function estimateDay(dayId) {
     return `~${min} min`;
 }
 
+const APP_VERSION = "v1.2";
+
 function renderHome() {
     let html = '';
     DAYS.forEach(day => {
@@ -264,6 +266,10 @@ function renderHome() {
             </div>
         `;
     });
+
+    // Ajout de la version en bas de la page d'accueil
+    html += `<div style="text-align: center; margin-top: 32px; font-size: 13px; color: var(--text-sec); opacity: 0.6; font-weight: 600;">Mon Programme PWA — ${APP_VERSION}</div>`;
+
     mainContent.innerHTML = html;
 }
 
