@@ -16,6 +16,8 @@ self.addEventListener('install', event => {
                 return cache.addAll(urlsToCache);
             })
     );
+    // Prendre le contrôle immédiatement sans attendre que l'app soit fermée
+    self.skipWaiting();
 });
 
 self.addEventListener('fetch', event => {
@@ -39,6 +41,9 @@ self.addEventListener('activate', event => {
                     }
                 })
             );
+        }).then(() => {
+            // Prendre le contrôle de toutes les pages ouvertes immédiatement
+            return clients.claim();
         })
     );
 });
