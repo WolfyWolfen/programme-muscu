@@ -22,10 +22,23 @@ self.addEventListener('fetch', event => {
     event.respondWith(
         caches.match(event.request)
             .then(response => {
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request);
+                // Retourner le cache si dispo, sinon aller chercher sur le réseau
+                return response || fetch(event.request);
             })
+    );
+});
+
+// Écouteur pour supprimer les anciens caches quand on met à jour la version
+self.addEventListener('activate', event => {
+    event.waitUntil(
+        caches.keys().then(cacheNames => {
+            return Promise.all(
+                cacheNames.map(cacheName => {
+                    if (cacheName !== CACHE_NAME) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        })
     );
 });
