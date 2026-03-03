@@ -28,6 +28,8 @@ body {
     background-color: var(--bg);
     color: var(--text);
     overflow-x: hidden;
+    /* Désactive le pull-to-refresh natif Android en mode PWA */
+    overscroll-behavior: none;
     user-select: none;
 }
 

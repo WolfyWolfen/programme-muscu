@@ -255,7 +255,7 @@ function estimateDay(dayId) {
     return `~${min} min`;
 }
 
-const APP_VERSION = "v1.4";
+const APP_VERSION = "v1.5";
 
 function renderHome() {
     let html = '';
