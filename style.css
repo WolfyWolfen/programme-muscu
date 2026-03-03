@@ -585,7 +585,7 @@ main {
 #confirm-modal {
     position: fixed;
     inset: 0;
-    z-index: 999;
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -762,6 +762,51 @@ main {
 
 .profile-box button:active {
     transform: scale(0.97);
+}
+
+/* Liste des profils sauvegardés */
+.profile-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.profile-btn {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 10px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: capitalize;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.profile-btn svg {
+    color: var(--primary);
+    width: 24px;
+    height: 24px;
+}
+
+.profile-btn:active,
+.profile-btn:hover {
+    border-color: var(--primary);
+    background: var(--primary-dim);
+}
+
+/* Zone d'ajout nouveau profil */
+.profile-new {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    margin-top: 10px;
 }
 
 /* Bouton de changement de profil dans le header */

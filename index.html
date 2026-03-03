@@ -28,9 +28,18 @@
         <div class="profile-box">
             <div class="profile-icon">💪</div>
             <h2>Bienvenue !</h2>
-            <p>Entrez votre prénom pour créer votre profil.<br>Vos données seront isolées des autres utilisateurs.</p>
-            <input type="text" id="profile-name-input" placeholder="Votre prénom..." maxlength="20" autocomplete="off">
-            <button id="profile-confirm-btn" onclick="confirmProfile()">Commencer</button>
+            <p>Sélectionnez votre profil ou créez-en un nouveau.<br>Vos données sont isolées des autres utilisateurs.
+            </p>
+
+            <div id="profile-list" class="profile-list">
+                <!-- Boutons générés par JS -->
+            </div>
+
+            <div class="profile-new" id="profile-new-container">
+                <input type="text" id="profile-name-input" placeholder="Nouveau prénom..." maxlength="20"
+                    autocomplete="off">
+                <button id="profile-confirm-btn" onclick="confirmProfile()">Créer</button>
+            </div>
         </div>
     </div>
 

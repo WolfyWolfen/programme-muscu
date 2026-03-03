@@ -67,5 +67,12 @@ La première fois que vous utilisez le chronomètre, Apple bloque le son par sé
   * Un **exercice entier**
   * La **séance complète** (en touchant la grosse poubelle en haut de la carte)
 
+## ⚙️ Partie 5 : Gérer ses programmes (Nouveauté V2)
+* Depuis l'écran d'accueil, touchez l'icône **Réglages (⚙️)** en haut à droite.
+* Vous accédez au **Gestionnaire de programmes**. Par défaut, vous êtes sur le programme "Split 4 Jours (Standard)".
+* Vous pouvez **Créer un nouveau programme**, le renommer, et ajouter ou supprimer autant de jours d'entraînement que vous le souhaitez.
+* Dans chaque journée, vous pouvez l'éditer pour lui ajouter de nouveaux exercices, définir votre objectif de séries, de répétitions, et paramétrer le temps de repos automatique spécifique à cet exercice !
+* N'oubliez pas de toucher **"Sélectionner ce programme"** pour qu'il devienne votre programme actif sur la page d'accueil !
+
 ---
 *Bon entraînement !* 💪

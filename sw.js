@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mon-programme-v1.7';
+const CACHE_NAME = 'mon-programme-v2.0';
 const urlsToCache = [
     './',
     './index.html',

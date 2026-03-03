@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 1.7** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 2.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -8,15 +8,15 @@ Application web progressive (PWA) de suivi d'entraînement musculaire. Accessibl
 
 ## ✨ Fonctionnalités
 
-- **Programme sur 5 jours** — Pecs/Triceps · Dos/Biceps · Cardio · Jambes · Full Haut du corps
+- **Éditeur de Programmes** — Créez, modifiez et partagez une infinité de programmes sportifs complets
+- **Multi-profils & Isolation** — Données strictement liées au profil choisi, sans mélange
 - **Suivi des séries** — Poids & reps pré-remplis depuis votre dernière séance
-- **Chrono de repos** — Temps automatique et adapté par exercice (60s à 2min30)
+- **Chrono de repos** — Temps automatique et personnalisable par exercice
 - **Chrono de séance** — Démarrage manuel, durée enregistrée dans l'historique
 - **Historique complet** — Suppression par séance, exercice ou série isolée
 - **Durée estimée** — Affichée sur chaque journée dans l'accueil
-- **Multi-profils** — Données isolées par prénom, pas de mélange entre utilisateurs
 - **100% offline** — Service Worker + cache, aucune connexion requise après le 1er chargement
-- **Mise à jour automatique** — Les nouveaux exercices/corrections arrivent sans action de l'utilisateur
+- **Mise à jour automatique** — Les nouveaux ajouts arrivent sans action de l'utilisateur
 
 ---
 
@@ -38,15 +38,19 @@ Cette application n'est pas sur les stores classiques (Play Store / App Store). 
 
 ---
 
-## 🗓 Programme
+## 🗓 Programmes (100% Personnalisables)
 
-| Jour | Séance | Durée |
-|------|--------|-------|
-| Lundi | Pecs & Triceps — développé couché, incliné haltères, dips | ~43 min |
-| Mardi | Dos & Biceps — tractions, rowing barre, tirage poitrine | ~42 min |
-| Mercredi | Cardio (1 semaine sur 2) | 30–45 min |
-| Jeudi | Jambes — Squat, Leg Extension, Fentes, RDL, Leg Curl | ~45 min |
-| Vendredi | Full Haut du Corps — épaules, pecs, dos, bras | ~42 min |
+L'application repose sur un système dynamique : **vous n'êtes plus limité à un programme pré-défini**. 
+Vous pouvez accéder au gestionnaire (icône ⚙️) pour créer une infinité de programmes selon vos objectifs (PPL, Split, Full Body, Force, etc).
+  
+Lors de la toute première utilisation, l'application génèrera un programme par défaut, le classique **Split 4 Jours (Standard)** :
+- **Lundi** : Pecs & Triceps
+- **Mardi** : Dos & Biceps
+- **Mercredi** : Cardio (Optionnel)
+- **Jeudi** : Jambes (Quadri & Ischios)
+- **Vendredi** : Full Haut du Corps
+
+Ce programme n'est qu'un point de départ. Vous êtes libre de le supprimer, de l'éditer ou de créer le vôtre de A à Z (Nom du jour, Poids, Exercices, Séries et Repos) !
 
 ---
 
@@ -65,7 +69,7 @@ Toutes les données sont stockées **localement sur votre appareil** (localStora
 ## 🔄 Mettre à jour l'application (pour les développeurs)
 
 1. Modifier le code source (`app.js`, `style.css`, `index.html`...)
-2. Ouvrir `sw.js` et incrémenter `CACHE_NAME` (ex: `v1.7` → `v1.8`)
+2. Ouvrir `sw.js` et incrémenter `CACHE_NAME` (ex: `v2.0` → `v2.1`)
 3. Faire de même pour `APP_VERSION` dans `app.js`
 4. `git add . && git commit -m "Version X.Y" && git push`
 
@@ -75,6 +79,8 @@ Les utilisateurs recevront la mise à jour automatiquement au prochain lancement
 
 ## 📜 Historique des versions (Changelog)
 
+- **v2.0.1** : Hotfix de l'audio iOS (passage à une unique carte son Singleton pour éviter les crashs matériels au 7e bip) et réparation de la suppression de profil (la modale se cachait sous le volet d'accueil PWA à cause de son z-index). L'éditeur de programmes protège aussi désormais les guillemets.
+- **v2.0 : Personnalisation Dynamique** : Refonte majeure avec la création d'un **Éditeur de Programmes** visuel. Vous pouvez maintenant créer, modifier et supprimer vos propres jours et exercices. Les programmes sont mutualisés sur l'appareil, mais la sélection du "programme actif" reste spécifique au profil ! Options de suppression d'utilisateurs ajoutée à l'écran d'accueil.
 - **v1.7** : Changement de stratégie de cache Service Worker en *Stale-While-Revalidate* pour corriger un blocage F5 sur d'anciennes versions.
 - **v1.6** : Correction du crash écran blanc au rechargement (F5) lié à la *Temporal Dead Zone* du navigateur (`ReferenceError` sur `APP_VERSION`).
 - **v1.5** : Désactivation du `pull-to-refresh` Android natif (`overscroll-behavior: none`) pour empêcher la recharge accidentelle et la perte d'état en glissant vers le bas.
