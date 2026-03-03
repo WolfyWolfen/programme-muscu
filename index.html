@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0d0f12">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Mon Programme">
+    <title>Mon Programme</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Écran de sélection de profil (affiché au 1er lancement) -->
+    <div id="profile-overlay" class="profile-overlay hidden">
+        <div class="profile-box">
+            <div class="profile-icon">💪</div>
+            <h2>Bienvenue !</h2>
+            <p>Entrez votre prénom pour créer votre profil.<br>Vos données seront isolées des autres utilisateurs.</p>
+            <input type="text" id="profile-name-input" placeholder="Votre prénom..." maxlength="20" autocomplete="off">
+            <button id="profile-confirm-btn" onclick="confirmProfile()">Commencer</button>
+        </div>
+    </div>
+
+    <div id="app">
+        <header id="main-header">
+            <div class="header-content">
+                <h1>Mon Programme</h1>
+                <p class="subtitle" id="header-subtitle">Progression & Hypertrophie</p>
+            </div>
+            <button id="back-btn" class="hidden">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+        </header>
+
+        <main id="main-content">
+            <!-- Content injected by JS -->
+        </main>
+
+        <div id="timer-bar" class="timer-bar hidden">
+            <div class="timer-time" id="timer-display">01:30</div>
+            <div class="timer-controls">
+                <button class="timer-btn" onclick="adjustTimer(-10)">-10s</button>
+                <button class="timer-btn main" onclick="toggleTimer()" id="timer-toggle-btn">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                </button>
+                <button class="timer-btn" onclick="adjustTimer(10)">+10s</button>
+                <button class="timer-btn close" onclick="closeTimer()">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <nav class="bottom-nav" id="bottom-nav">
+            <button class="nav-btn active" data-view="home">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Programme</span>
+            </button>
+            <button class="nav-btn" data-view="history">
+                <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                <span>Historique</span>
+            </button>
+        </nav>
+
+        <div id="toast" class="toast hidden">Sauvegardé avec succès</div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('ServiceWorker registered'))
+                    .catch(err => console.log('ServiceWorker error', err));
+            });
+        }
+    </script>
+</body>
+
+</html>
