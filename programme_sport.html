@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Programme — Fiche Sportive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f172a;
+            --surface: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --accent: #60a5fa;
+            --text: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --radius: 16px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+
+        .day-card {
+            background: var(--surface);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .day-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        .day-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .day-focus {
+            font-size: 0.9rem;
+            background: rgba(59, 130, 246, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .exercise-list {
+            list-style: none;
+        }
+
+        .exercise-item {
+            margin-bottom: 16px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .exercise-details {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            display: flex;
+            gap: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .program-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            body {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Split 4 Jours (Standard)</h1>
+            <p class="subtitle">Programme d'entraînement complet optimisé pour l'hypertrophie</p>
+        </header>
+
+        <div class="program-grid">
+            <!-- Lundi -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h2>Lundi</h2>
+                    <span class="day-focus">Pecs & Triceps</span>
+                </div>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <span class="exercise-name">Développé Couché Barre</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>120s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Développé Incliné Haltères</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>90s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Pull-over Haltère</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>75s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Dips (lestés si possible)</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>90s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Barre au Front (Skull Crusher)</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>75s</strong> Repos</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mardi -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h2>Mardi</h2>
+                    <span class="day-focus">Dos & Biceps</span>
+                </div>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <span class="exercise-name">Tractions / Traction lestée</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>120s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Rowing Barre (penchée)</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>120s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Tirage Poitrine Barre</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>90s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Curl Barre EZ</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>75s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Curl Marteau Haltères</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>60s</strong> Repos</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mercredi -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h2>Mercredi</h2>
+                    <span class="day-focus">Cardio</span>
+                </div>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <span class="exercise-name">Course / Vélo / Elliptique</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>30-45 min</strong></span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Jeudi -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h2>Jeudi</h2>
+                    <span class="day-focus">Jambes</span>
+                </div>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <span class="exercise-name">Squat Barre (Quadriceps)</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>150s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Leg Extension Machine</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>75s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Fentes Haltères</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>90s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Soulevé de Terre Jambes Tendues</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>120s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Leg Curl Assis (Ischios)</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>75s</strong> Repos</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Vendredi -->
+            <div class="day-card">
+                <div class="day-header">
+                    <h2>Vendredi</h2>
+                    <span class="day-focus">Full Haut du Corps</span>
+                </div>
+                <ul class="exercise-list">
+                    <li class="exercise-item">
+                        <span class="exercise-name">Développé Militaire Haltères</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>90s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Élévations Latérales Haltères</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>60s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Oiseau / Face Pull</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>60s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Tirage Poulie Basse</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>75s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Développé Incliné Machine</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>4</strong> Séries</span>
+                            <span class="detail-item"><strong>90s</strong> Repos</span>
+                        </div>
+                    </li>
+                    <li class="exercise-item">
+                        <span class="exercise-name">Superset — Curl/Kickback</span>
+                        <div class="exercise-details">
+                            <span class="detail-item"><strong>3</strong> Séries</span>
+                            <span class="detail-item"><strong>60s</strong> Repos</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

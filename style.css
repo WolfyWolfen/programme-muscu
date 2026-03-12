@@ -251,6 +251,27 @@ main {
     border: 1px solid rgba(0, 230, 118, 0.3);
 }
 
+.btn-remove-set {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--text-sec);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.6;
+}
+
+.btn-remove-set:hover {
+    color: var(--danger);
+    background: rgba(255, 23, 68, 0.1);
+    opacity: 1;
+}
+
 .btn-add-set {
     width: 100%;
     padding: 14px;

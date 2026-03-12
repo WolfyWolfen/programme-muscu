@@ -804,6 +804,17 @@ window.toggleCheck = function (exId, setIndex) {
     }
 };
 
+window.deleteSet = function (exId, setIndex) {
+    if (currentWorkoutData[exId].length > 1) {
+        currentWorkoutData[exId].splice(setIndex, 1);
+        renderSets(exId);
+        saveDraft();
+    } else {
+        // Optionnel : avertir qu'on ne peut pas supprimer la dernière série
+        alert("Impossible de supprimer la dernière série. Laissez-la vide si vous ne la faites pas.");
+    }
+};
+
 window.updateInput = function (exId, setIndex, field, value) {
     currentWorkoutData[exId][setIndex][field] = value;
     saveDraft();
@@ -835,6 +846,12 @@ function renderSets(exId) {
                 </div>
                 <button class="btn-check ${checkedClass}" onclick="toggleCheck('${exId}', ${i})">
                     ${checkIcon}
+                </button>
+                <button class="btn-remove-set" onclick="deleteSet('${exId}', ${i})" title="Supprimer cette série">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
                 </button>
             </div>
         `;
