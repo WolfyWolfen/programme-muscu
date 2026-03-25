@@ -1,4 +1,4 @@
-# 📱 Guide d'Installation et d'Utilisation : Android
+# 📱 Guide d'Installation et d'Utilisation : Android — v2.2
 
 Votre programme de musculation fonctionne comme une **vraie application native** sur votre téléphone Android grâce à la technologie PWA (Progressive Web App). Cela signifie qu'elle s'installe sur votre écran d'accueil, s'ouvre en plein écran sans le navigateur autour, et fonctionne **100 % hors-ligne** (sans connexion internet).
 
@@ -45,7 +45,7 @@ Au tout premier lancement de l'application depuis votre écran d'accueil :
 
 ### 3. Ajuster le chrono
 * Le chrono s'affiche en bas. Vous pouvez ajouter **+10s** ou retirer **-10s** en touchant les boutons.
-* Quand il arrive à zéro, un **BIP sonore** retentit. *(Assurez-vous que le volume média de votre téléphone n'est pas silencieux).*
+* Quand il arrive à zéro, un **Double Bip sonore** percutant (façon montre de sport) retentit. *(Assurez-vous que le volume média de votre téléphone n'est pas silencieux).*
 
 ### 4. Terminer la séance
 * En bas de page, touchez **"Terminer & Sauvegarder"**.

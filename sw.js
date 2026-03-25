@@ -1,8 +1,14 @@
-const CACHE_NAME = 'mon-programme-v2.1';
+const CACHE_NAME = 'mon-programme-v2.2';
 const urlsToCache = [
     './',
     './index.html',
     './style.css',
+    './js/utils.js',
+    './js/storage.js',
+    './js/state.js',
+    './js/ui.js',
+    './js/editor.js',
+    './js/workout.js',
     './app.js',
     './icon.svg',
     './manifest.json',

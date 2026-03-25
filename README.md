@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 2.1** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 2.2** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -69,7 +69,7 @@ Toutes les données sont stockées **localement sur votre appareil** (localStora
 ## 🔄 Mettre à jour l'application (pour les développeurs)
 
 1. Modifier le code source (`app.js`, `style.css`, `index.html`...)
-2. Ouvrir `sw.js` et incrémenter `CACHE_NAME` (ex: `v2.0` → `v2.1`)
+2. Ouvrir `sw.js` et incrémenter `CACHE_NAME` (ex: `v2.1` → `v2.2`)
 3. Faire de même pour `APP_VERSION` dans `app.js`
 4. `git add . && git commit -m "Version X.Y" && git push`
 
@@ -79,8 +79,8 @@ Les utilisateurs recevront la mise à jour automatiquement au prochain lancement
 
 ## 📜 Historique des versions (Changelog)
 
+- **v2.2 : Architecture Modulaire & Son Bluetooth** : Refonte interne majeure (fichiers JS découpés pour plus de maintenabilité), correction sécuritaire (faille XSS mitigée via `escapeHTML`), conception d'un nouveau design sonore "Double Bip" percutant et remplacement de l'API Web Audio par un générateur WAV interne pour assurer la compatibilité du son sur les écouteurs Bluetooth sous iOS Safari.
 - **v2.1 : Améliorations de séance & Fiche Sportive** : Ajout de la possibilité de supprimer n'importe quelle série à la volée pendant l'entraînement. Intégration d'une nouvelle page HTML autonome (`programme_sport.html`) pour présenter les exercices de façon isolée et esthétique.
-- **v2.0.1** : Hotfix de l'audio iOS (passage à une unique carte son Singleton pour éviter les crashs matériels au 7e bip) et réparation de la suppression de profil (la modale se cachait sous le volet d'accueil PWA à cause de son z-index). L'éditeur de programmes protège aussi désormais les guillemets.
 - **v2.0 : Personnalisation Dynamique** : Refonte majeure avec la création d'un **Éditeur de Programmes** visuel. Vous pouvez maintenant créer, modifier et supprimer vos propres jours et exercices. Les programmes sont mutualisés sur l'appareil, mais la sélection du "programme actif" reste spécifique au profil ! Options de suppression d'utilisateurs ajoutée à l'écran d'accueil.
 - **v1.7** : Changement de stratégie de cache Service Worker en *Stale-While-Revalidate* pour corriger un blocage F5 sur d'anciennes versions.
 - **v1.6** : Correction du crash écran blanc au rechargement (F5) lié à la *Temporal Dead Zone* du navigateur (`ReferenceError` sur `APP_VERSION`).

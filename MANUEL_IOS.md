@@ -1,4 +1,4 @@
-# 📱 Guide d'Installation et d'Utilisation : iOS (iPhone & iPad)
+# 📱 Guide d'Installation et d'Utilisation : iOS (iPhone & iPad) — v2.2
 
 Votre programme de musculation fonctionne comme une **vraie application native** sur votre iPhone grâce à la technologie PWA (Progressive Web App). Cela signifie qu'elle s'installe sur votre écran d'accueil, s'ouvre en plein écran sans bordures Safari, et fonctionne **100 % hors-ligne** même sans réseau (dans une cave ou une salle de sport mal couverte).
 
@@ -29,8 +29,8 @@ Au tout premier lancement de l'application depuis votre écran d'accueil :
 3. Si plusieurs personnes utilisent le même appareil (très rare sur téléphone, mais possible sur iPad), les données ne se mélangeront jamais. Chaque prénom a son propre historique et ses propres poids de référence.
 4. *(Note : Vous pouvez changer d'utilisateur à tout moment en touchant votre prénom en haut à droite de l'écran d'accueil de l'application).*
 
-🚨 **IMPORTANT : Le son sur iOS**
-La première fois que vous utilisez le chronomètre, Apple bloque le son par sécurité. Au moment où vous touchez l'écran pour la première fois (par exemple, pour entrer dans la journée "Lundi"), **le système déverrouille l'audio silencieusement**. Vous entendrez bien le bip de fin de repos !
+🚨 **IMPORTANT : Le son Bluetooth sur iOS (Amélioré en v2.2)**
+Le lecteur audio a été entièrement repensé. Le son des temps de repos se joue désormais parfaitement sans bug de routage, que vous utilisiez les haut-parleurs de l'iPhone ou des écouteurs Bluetooth (AirPods, casques, etc) !
 
 ---
 
