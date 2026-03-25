@@ -319,8 +319,10 @@ function renderStats() {
         const dateObj = new Date(session.date);
         const day = String(dateObj.getDate()).padStart(2, '0');
         const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const dayStr = dateObj.toLocaleDateString('fr-FR', { weekday: 'short' }).replace('.', '').toUpperCase();
         return {
             date: `${day}/${month}`,
+            dayStr: dayStr,
             vol: vol
         };
     });
@@ -337,7 +339,10 @@ function renderStats() {
             <div class="chart-bar-wrapper">
                 <span class="chart-value">${s.vol > 0 ? (s.vol >= 1000 ? (s.vol/1000).toFixed(1) + 'k' : s.vol) : ''}</span>
                 <div class="chart-bar" style="height: ${hPx}px;"></div>
-                <span class="chart-label">${s.date}</span>
+                <div style="display: flex; flex-direction: column; align-items: center; margin-top: 8px;">
+                    <span class="chart-label" style="margin-top: 0;">${s.date}</span>
+                    <span class="chart-label" style="margin-top: 2px; font-weight: 600; font-size: 9px; opacity: 0.8;">${s.dayStr}</span>
+                </div>
             </div>
         `;
     });
