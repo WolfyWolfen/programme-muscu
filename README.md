@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 3.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 3.0.1** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -78,6 +78,8 @@ Les utilisateurs recevront la mise à jour automatiquement au prochain lancement
 ---
 
 ## 📜 Historique des versions (Changelog)
+
+- **v3.0.1** : Hotfix d'un bug CSS (Flexbox) empêchant les barres du graphique de s'afficher correctement sur certains navigateurs mobiles. Augmentation de la version du Service Worker pour forcer la mise à jour du cache.
 
 - **v3.0 : Statistiques & Sauvegarde** : Ajout d'un tout nouvel onglet Statistiques (impact global, volume total soulevé, graphique des 10 dernières séances). Système complet d'Export/Import (JSON) pour sécuriser ou transférer vos données d'un appareil à l'autre. Confort de l'éditeur de programme renforcé avec l'ajout de boutons tactiles natifs (Monter / Descendre) pour un réagencement robuste. Architecture JS entièrement documentée et typée (JSDoc).
 - **v2.2 : Architecture Modulaire & Son Bluetooth** : Refonte interne majeure (fichiers JS découpés pour plus de maintenabilité), correction sécuritaire (faille XSS mitigée via `escapeHTML`), conception d'un nouveau design sonore "Double Bip" percutant et remplacement de l'API Web Audio par un générateur WAV interne pour assurer la compatibilité du son sur les écouteurs Bluetooth sous iOS Safari.

@@ -1,4 +1,4 @@
-# 📱 Guide d'Installation et d'Utilisation : Android — v3.0
+# 📱 Guide d'Installation et d'Utilisation : Android — v3.0.1
 
 Votre programme de musculation fonctionne comme une **vraie application native** sur votre téléphone Android grâce à la technologie PWA (Progressive Web App). Cela signifie qu'elle s'installe sur votre écran d'accueil, s'ouvre en plein écran sans le navigateur autour, et fonctionne **100 % hors-ligne** (sans connexion internet).
 
