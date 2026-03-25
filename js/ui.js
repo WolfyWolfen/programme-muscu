@@ -328,14 +328,15 @@ function renderStats() {
     // 10 Dernières pour le graph
     const recentSessions = sessionsVolume.slice(-10);
     const maxVol = Math.max(...recentSessions.map(s => s.vol), 1); 
+    const MAX_BAR_PX = 90; // Hauteur max en pixels pour la barre
 
     let chartHtml = '';
     recentSessions.forEach(s => {
-        const heightPct = Math.max(Math.round((s.vol / maxVol) * 100), 2); // Minimum 2% pour qu'elle soit visible
+        const hPx = Math.max(Math.round((s.vol / maxVol) * MAX_BAR_PX), 4); // Min 4px
         chartHtml += `
             <div class="chart-bar-wrapper">
                 <span class="chart-value">${s.vol > 0 ? (s.vol >= 1000 ? (s.vol/1000).toFixed(1) + 'k' : s.vol) : ''}</span>
-                <div class="chart-bar" style="height: ${heightPct}%;"></div>
+                <div class="chart-bar" style="height: ${hPx}px;"></div>
                 <span class="chart-label">${s.date}</span>
             </div>
         `;
