@@ -10,6 +10,10 @@ let historyData = [];
 let audioCtx = null;
 let audioUnlocked = false;
 
+/**
+ * Initialise (ou retourne) le contexte audio global unique (singleton).
+ * @returns {AudioContext} Le contexte audio natif
+ */
 function getAudioContext() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -17,6 +21,9 @@ function getAudioContext() {
     return audioCtx;
 }
 
+/**
+ * Déverrouille l'audio sur iOS lors de la première interaction utilisateur ("touch" initial).
+ */
 function unlockAudio() {
     if (audioUnlocked) return;
     const ctx = getAudioContext();
@@ -27,6 +34,10 @@ function unlockAudio() {
 document.addEventListener('touchstart', unlockAudio, { once: true });
 document.addEventListener('click', unlockAudio, { once: true });
 
+/**
+ * Valide la création ou la sélection d'un profil utilisateur.
+ * @param {string|null} forcedName - Nom forcé (utile si appelé programmatiquement depuis un bouton existant)
+ */
 window.confirmProfile = function (forcedName = null) {
     const input = document.getElementById('profile-name-input');
     const name = forcedName || input?.value.trim() || '';
@@ -48,11 +59,18 @@ window.confirmProfile = function (forcedName = null) {
     initApp();
 };
 
+/**
+ * Ouvre la modale permettant de changer de profil utilisateur actif.
+ */
 window.switchProfile = function () {
     document.getElementById('profile-overlay').classList.remove('hidden');
     renderProfileModal();
 };
 
+/**
+ * Supprime complètement un profil et toutes ses données associées (historique, programmes) du localStorage.
+ * @param {string} userId - L'ID de l'utilisateur à supprimer
+ */
 window.deleteProfile = function (userId) {
     showConfirm("Êtes-vous sûr de vouloir supprimer définitivement ce profil et TOUTES ses données (programmes, historique, etc.) ?", () => {
         let profiles = getSavedProfiles();

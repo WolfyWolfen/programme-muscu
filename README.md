@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 2.2** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 3.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -79,6 +79,7 @@ Les utilisateurs recevront la mise à jour automatiquement au prochain lancement
 
 ## 📜 Historique des versions (Changelog)
 
+- **v3.0 : Statistiques & Sauvegarde** : Ajout d'un tout nouvel onglet Statistiques (impact global, volume total soulevé, graphique des 10 dernières séances). Système complet d'Export/Import (JSON) pour sécuriser ou transférer vos données d'un appareil à l'autre. Confort de l'éditeur de programme renforcé avec l'ajout de boutons tactiles natifs (Monter / Descendre) pour un réagencement robuste. Architecture JS entièrement documentée et typée (JSDoc).
 - **v2.2 : Architecture Modulaire & Son Bluetooth** : Refonte interne majeure (fichiers JS découpés pour plus de maintenabilité), correction sécuritaire (faille XSS mitigée via `escapeHTML`), conception d'un nouveau design sonore "Double Bip" percutant et remplacement de l'API Web Audio par un générateur WAV interne pour assurer la compatibilité du son sur les écouteurs Bluetooth sous iOS Safari.
 - **v2.1 : Améliorations de séance & Fiche Sportive** : Ajout de la possibilité de supprimer n'importe quelle série à la volée pendant l'entraînement. Intégration d'une nouvelle page HTML autonome (`programme_sport.html`) pour présenter les exercices de façon isolée et esthétique.
 - **v2.0 : Personnalisation Dynamique** : Refonte majeure avec la création d'un **Éditeur de Programmes** visuel. Vous pouvez maintenant créer, modifier et supprimer vos propres jours et exercices. Les programmes sont mutualisés sur l'appareil, mais la sélection du "programme actif" reste spécifique au profil ! Options de suppression d'utilisateurs ajoutée à l'écran d'accueil.

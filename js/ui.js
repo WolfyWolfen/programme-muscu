@@ -4,15 +4,24 @@ const backBtn = document.getElementById('back-btn');
 const headerSubtitle = document.getElementById('header-subtitle');
 const navBtns = document.querySelectorAll('.nav-btn');
 
+/**
+ * Change la vue principale de l'application (Programme, Historique, Stats, Éditeur).
+ * @param {string} view - Le nom de la vue cible (ex: 'home', 'history', 'stats', 'programs').
+ * @param {string|null} param - Un paramètre optionnel (ex: l'id du programme à éditer).
+ */
 function switchView(view, param = null) {
     currentView = view;
     navBtns.forEach(b => b.classList.remove('active'));
 
-    if (view === 'home' || view === 'history') {
+    if (view === 'home' || view === 'history' || view === 'stats') {
         const btn = document.querySelector(`.nav-btn[data-view="${view}"]`);
         if (btn) btn.classList.add('active');
         backBtn.classList.add('hidden');
-        headerSubtitle.textContent = view === 'home' ? 'Progression & Hypertrophie' : 'Historique des Séances';
+        
+        if (view === 'home') headerSubtitle.textContent = 'Progression & Hypertrophie';
+        else if (view === 'history') headerSubtitle.textContent = 'Historique des Séances';
+        else if (view === 'stats') headerSubtitle.textContent = 'Statistiques';
+        
         document.querySelector('.header-content').style.marginLeft = '0';
     } else {
         backBtn.classList.remove('hidden');
@@ -25,6 +34,8 @@ function switchView(view, param = null) {
         renderHome();
     } else if (view === 'history') {
         renderHistory();
+    } else if (view === 'stats') {
+        renderStats();
     } else if (view === 'workout') {
         document.querySelector('.nav-btn[data-view="home"]').classList.add('active');
     } else if (view === 'programs') {
@@ -37,11 +48,16 @@ function switchView(view, param = null) {
         renderProgramEditor(param);
     }
 
-    if (view === 'home' || view === 'history') {
+    if (view === 'home' || view === 'history' || view === 'stats') {
         backBtn.onclick = () => switchView('home');
     }
 }
 
+/**
+ * Estime la durée d'une séance (en minutes) en fonction du nombre de séries et du temps de repos.
+ * @param {string} dayId - L'identifiant de la journée.
+ * @returns {string} Chaîne formatée (ex: "~45 min").
+ */
 function estimateDay(dayId) {
     const exos = getProgExo(dayId);
     if (!exos || exos.length === 0) return '0 min';
@@ -57,6 +73,9 @@ function estimateDay(dayId) {
     return `~${min} min`;
 }
 
+/**
+ * Construit et affiche la vue "Accueil" (Liste des jours d'entraînement du programme actif).
+ */
 function renderHome() {
     let html = '';
     const progDays = getProgDays();
@@ -94,6 +113,9 @@ function renderHome() {
     mainContent.innerHTML = html;
 }
 
+/**
+ * Met à jour la modale de sélection de profil (Utilisateurs et Export/Import JSON).
+ */
 function renderProfileModal() {
     const profiles = getSavedProfiles();
     const listContainer = document.getElementById('profile-list');
@@ -129,12 +151,20 @@ function renderProfileModal() {
     }
 }
 
+/**
+ * Définit un nouveau programme entier comme cible en écrasant l'actif.
+ * @param {string} id - L'ID du programme
+ */
 window.selectProgram = function (id) {
     localStorage.setItem(getKey('active_program_id'), id);
     showToast();
     switchView('home');
 };
 
+/**
+ * Supprime un programme de la bibliothèque locale.
+ * @param {string} id - L'ID du programme 
+ */
 window.deleteProgram = function (id) {
     showConfirm("Supprimer définitivement ce programme pour TOUS LES UTILISATEURS de cet appareil ?", () => {
         let programs = getMyPrograms();
@@ -149,6 +179,9 @@ window.deleteProgram = function (id) {
     });
 };
 
+/**
+ * Affiche la liste globale de tous les programmes créés.
+ */
 function renderProgramsList() {
     const programs = getMyPrograms();
     const activeId = getActiveProgram().id;
@@ -187,6 +220,9 @@ function renderProgramsList() {
     mainContent.innerHTML = html;
 }
 
+/**
+ * Affiche l'historique complet des entraînements (séance par séance).
+ */
 function renderHistory() {
     if (historyData.length === 0) {
         mainContent.innerHTML = '<div style="text-align:center; margin-top: 40px; color: var(--text-sec)">Aucune séance enregistrée pour le moment.</div>';
@@ -252,6 +288,86 @@ function renderHistory() {
     });
 
     mainContent.appendChild(container);
+}
+
+/**
+ * Affiche l'onglet Statistiques, incluant le volume cumulé et le graphique des 10 dernières séances.
+ */
+function renderStats() {
+    if (historyData.length === 0) {
+        mainContent.innerHTML = '<div style="text-align:center; margin-top: 40px; color: var(--text-sec)">Aucune donnée disponible pour le moment. Terminez une séance pour débloquer cet onglet !</div>';
+        return;
+    }
+
+    let totalVolume = 0;
+    let totalWorkouts = historyData.length;
+
+    // Calculer le volume pour chaque séance (dans l'ordre chronologique pour le graph)
+    // historyData est stocké dans l'ordre d'insertion (ancien -> récent) ou inverse ?
+    // Non, il faut le trier par date croissante pour le graphique, et on prend les 10 dernières
+    const sortedHistory = [...historyData].sort((a, b) => a.date - b.date); 
+    
+    const sessionsVolume = sortedHistory.map(session => {
+        let vol = 0;
+        Object.values(session.data).forEach(sets => {
+            sets.forEach(s => {
+                if (s.checked && s.kg && s.reps) vol += (parseFloat(s.kg) * parseInt(s.reps));
+            });
+        });
+        totalVolume += vol;
+        // Format court: ex "14 fév"
+        const dateObj = new Date(session.date);
+        const day = String(dateObj.getDate()).padStart(2, '0');
+        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        return {
+            date: `${day}/${month}`,
+            vol: vol
+        };
+    });
+
+    // 10 Dernières pour le graph
+    const recentSessions = sessionsVolume.slice(-10);
+    const maxVol = Math.max(...recentSessions.map(s => s.vol), 1); 
+
+    let chartHtml = '';
+    recentSessions.forEach(s => {
+        const heightPct = Math.max(Math.round((s.vol / maxVol) * 100), 2); // Minimum 2% pour qu'elle soit visible
+        chartHtml += `
+            <div class="chart-bar-wrapper">
+                <span class="chart-value">${s.vol > 0 ? (s.vol >= 1000 ? (s.vol/1000).toFixed(1) + 'k' : s.vol) : ''}</span>
+                <div class="chart-bar" style="height: ${heightPct}%;"></div>
+                <span class="chart-label">${s.date}</span>
+            </div>
+        `;
+    });
+
+    mainContent.innerHTML = `
+        <div class="stats-container">
+            <h2 style="font-size: 20px; color: var(--text); display: flex; align-items: center; gap: 8px;">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                Impact Global
+            </h2>
+            <div style="display: flex; gap: 16px;">
+                <div class="stat-card" style="flex: 1;">
+                    <div style="font-size: 13px; color: var(--text-sec);">Séances validées</div>
+                    <div class="stat-number">${totalWorkouts}</div>
+                </div>
+                <div class="stat-card" style="flex: 1;">
+                    <div style="font-size: 13px; color: var(--text-sec);">Volume total</div>
+                    <div class="stat-number" style="font-size: 24px;">${totalVolume.toLocaleString('fr-FR')} <span style="font-size: 14px">kg</span></div>
+                </div>
+            </div>
+            
+            <div class="stat-card" style="margin-top: 8px;">
+                <h3 style="font-size: 14px; text-align: left; margin-bottom: 8px; color: var(--text-sec);">Progression (10 dernières séances)</h3>
+                <div class="chart-container">
+                    ${chartHtml}
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 window.deleteHistorySession = function (sessionId) {

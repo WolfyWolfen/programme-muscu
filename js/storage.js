@@ -1,5 +1,9 @@
 // js/storage.js
 
+/**
+ * Retourne le programme classique (Split 4 Jours) généré par défaut.
+ * @returns {Object} Le programme par défaut
+ */
 function getDefaultProgram() {
     return {
         id: 'standard_v1',
@@ -48,7 +52,11 @@ function getDefaultProgram() {
     };
 }
 
-// Récupère TOUS les programmes (Globaux)
+/**
+ * Récupère tous les programmes personnalisés enregistrés sur l'appareil.
+ * Gère également la rétrocompatibilité avec l'ancienne clé localStorage 'my_custom_programs'.
+ * @returns {Array} Liste des programmes
+ */
 function getMyPrograms() {
     let programs = JSON.parse(localStorage.getItem('all_custom_programs'));
     if (!programs) {
@@ -66,7 +74,11 @@ function getMyPrograms() {
     return programs;
 }
 
-// Récupère LE programme actuellement sélectionné
+/**
+ * Récupère le programme défini comme "actif" par l'utilisateur courant.
+ * S'il n'y en a pas, active le premier programme de la liste globale.
+ * @returns {Object} Le programme actif
+ */
 function getActiveProgram() {
     const programs = getMyPrograms();
     let activeId = localStorage.getItem(getKey('active_program_id'));
@@ -79,17 +91,41 @@ function getActiveProgram() {
     return active;
 }
 
+/**
+ * Renvoie la liste des jours d'entraînement du programme actif.
+ * @returns {Array} Tableau d'objets (journées)
+ */
 function getProgDays() { return getActiveProgram().days; }
+
+/**
+ * Renvoie la liste des exercices prévus pour un jour donné.
+ * @param {string} dayId - Identifiant de la journée (ex: "lundi")
+ * @returns {Array} Tableau d'exercices
+ */
 function getProgExo(dayId) { return getActiveProgram().exercises[dayId] || []; }
 
+/**
+ * Renvoie une clé localStorage préfixée par l'ID de l'utilisateur courant pour garantir l'isolation des données.
+ * @param {string} name - Nom de la variable
+ * @returns {string} Clé préfixée
+ */
 function getKey(name) {
     return `${currentUserId}_${name}`;
 }
 
+/**
+ * Récupère la liste de tous les profils (utilisateurs) inscrits sur cet appareil.
+ * @returns {Array} Tableau de profils
+ */
 function getSavedProfiles() {
     return JSON.parse(localStorage.getItem('all_saved_profiles')) || [];
 }
 
+/**
+ * Sauvegarde un nouveau profil dans le registre global.
+ * @param {string} name - Nom à afficher
+ * @param {string} userId - Identifiant unique généré
+ */
 function saveProfile(name, userId) {
     const profiles = getSavedProfiles();
     const existing = profiles.find(p => p.id === userId);
@@ -97,4 +133,65 @@ function saveProfile(name, userId) {
         profiles.push({ id: userId, name: name });
         localStorage.setItem('all_saved_profiles', JSON.stringify(profiles));
     }
+}
+
+/**
+ * Télécharge un fichier JSON contenant l'intégralité du localStorage de l'appareil.
+ * Utile pour sauvegarder et migrer ses historiques et programmes.
+ */
+window.exportAllData = function() {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        data[key] = localStorage.getItem(key);
+    }
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `mon_programme_sauvegarde_${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    if (typeof showToast !== 'undefined') showToast('Sauvegarde téléchargée');
+};
+
+/**
+ * Lit un fichier JSON de sauvegarde et remplace complètement le contenu
+ * du localStorage avec ces données. L'application se recharge si succès.
+ * @param {Event} event - L'évènement du tag <input type="file">
+ */
+window.importAllData = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = JSON.parse(e.target.result);
+            if (!data || typeof data !== 'object') throw new Error("Fichier invalide");
+            
+            const msg = "⚠️ ATTENTION : La restauration de ce fichier remplacera définitivement TOUTES vos données actuelles sur cet appareil. Voulez-vous continuer ?";
+            
+            if (typeof showConfirm !== 'undefined') {
+                showConfirm(msg, () => doRestore(data));
+            } else if (confirm(msg)) {
+                doRestore(data);
+            }
+        } catch (err) {
+            alert("Erreur lors de la lecture du fichier de sauvegarde. Assurez-vous qu'il s'agit d'un fichier valide.");
+            console.error(err);
+        }
+        event.target.value = '';
+    };
+    reader.readAsText(file);
+};
+
+function doRestore(data) {
+    localStorage.clear();
+    for (let key in data) {
+        localStorage.setItem(key, data[key]);
+    }
+    alert("Restauration réussie ! L'application va se recharger avec vos données.");
+    window.location.reload();
 }

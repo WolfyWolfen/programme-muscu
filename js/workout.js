@@ -3,6 +3,9 @@
 let sessionTimerInterval = null;
 let sessionStartTime = null;
 
+/**
+ * Lance (ou relance) le chronomètre global de la séance.
+ */
 function startSessionTimer() {
     if (sessionTimerInterval) return;
     sessionStartTime = sessionStartTime || Date.now();
@@ -17,6 +20,10 @@ function startSessionTimer() {
     if (startBtn) startBtn.textContent = '⏸';
 }
 
+/**
+ * Arrête le chronomètre global de la séance.
+ * @returns {number} La durée totale écoulée en secondes
+ */
 function stopSessionTimer() {
     clearInterval(sessionTimerInterval);
     sessionTimerInterval = null;
@@ -28,6 +35,9 @@ function stopSessionTimer() {
     return 0;
 }
 
+/**
+ * Bascule l'état (Play/Pause) du chronomètre global de la séance.
+ */
 window.toggleSessionTimer = function () {
     const startBtn = document.getElementById('session-start-btn');
     if (sessionTimerInterval) {
@@ -40,6 +50,11 @@ window.toggleSessionTimer = function () {
     }
 };
 
+/**
+ * Démarre une nouvelle séance complète pour la journée sélectionnée.
+ * Prépare les données (via historique/brouillons/références) pour pré-remplir l'UI.
+ * @param {string} dayId - L'ID de la journée (ex: "lundi")
+ */
 window.startWorkout = function(dayId) {
     activeWorkoutDay = getProgDays().find(d => d.id === dayId);
     currentWorkoutData = {};
@@ -111,6 +126,10 @@ window.startWorkout = function(dayId) {
     mainContent.appendChild(container);
 }
 
+/**
+ * Sauvegarde silencieusement l'état en cours d'une séance (brouillon) pour 
+ * prévenir les pertes de données en cas de fermeture/crash.
+ */
 function saveDraft() {
     if (activeWorkoutDay) {
         let drafts = JSON.parse(localStorage.getItem(getKey('my_workout_drafts'))) || {};
@@ -119,6 +138,9 @@ function saveDraft() {
     }
 }
 
+/**
+ * Efface le brouillon de la séance en cours.
+ */
 function clearDraft() {
     if (activeWorkoutDay) {
         let drafts = JSON.parse(localStorage.getItem(getKey('my_workout_drafts'))) || {};
@@ -127,12 +149,22 @@ function clearDraft() {
     }
 }
 
+/**
+ * Ajoute une série vide supplémentaire à un exercice spécifique pendant une séance.
+ * @param {string} exId - L'identifiant de l'exercice
+ */
 window.addSet = function (exId) {
     currentWorkoutData[exId].push({ kg: '', reps: '', checked: false });
     renderSets(exId);
     saveDraft();
 };
 
+/**
+ * Valide ou invalide une série spécifique.
+ * Met à jour l'UI, et déclenche le Timer de Repos si elle est validée.
+ * @param {string} exId - L'ID de l'exercice
+ * @param {number} setIndex - L'index de la série dans le tableau
+ */
 window.toggleCheck = function (exId, setIndex) {
     const isChecked = currentWorkoutData[exId][setIndex].checked;
     currentWorkoutData[exId][setIndex].checked = !isChecked;
