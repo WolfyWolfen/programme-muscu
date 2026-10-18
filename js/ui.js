@@ -10,6 +10,10 @@ const navBtns = document.querySelectorAll('.nav-btn');
  * @param {string|null} param - Un paramètre optionnel (ex: l'id du programme à éditer).
  */
 function switchView(view, param = null) {
+    if (currentView === 'workout' && view !== 'workout') {
+        if (typeof resetSessionTimer === 'function') resetSessionTimer();
+        if (typeof setWakeLock === 'function') setWakeLock(false);
+    }
     currentView = view;
     navBtns.forEach(b => b.classList.remove('active'));
 
@@ -119,6 +123,12 @@ function renderHome() {
 function renderProfileModal() {
     const profiles = getSavedProfiles();
     const listContainer = document.getElementById('profile-list');
+    const closeBtn = document.getElementById('profile-close-btn');
+
+    if (closeBtn) {
+        if (currentUserId) closeBtn.classList.remove('hidden');
+        else closeBtn.classList.add('hidden');
+    }
 
     if (!listContainer) return;
 
@@ -196,6 +206,10 @@ function renderProgramsList() {
                         <div class="day-icon">${isActive ? '⭐' : '📄'}</div>
                         <h3 style="font-size: 18px;">${escapeHTML(p.name)}</h3>
                     </div>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn-icon-action" onclick="duplicateProgram('${p.id}')" title="Dupliquer ce programme">📋</button>
+                        <button class="btn-icon-action" onclick="exportSingleProgram('${p.id}')" title="Partager / Exporter ce programme (JSON)">📤</button>
+                    </div>
                 </div>
                 <div style="display: flex; gap: 10px; width: 100%; margin-top: 8px;">
                     ${!isActive ? `<button class="btn-primary" style="flex: 1; padding: 12px; font-size: 14px; border-radius: var(--radius-sm);" onclick="selectProgram('${p.id}')">Activer</button>` : `<button class="btn-primary" style="flex: 1; padding: 12px; font-size: 14px; border-radius: var(--radius-sm); opacity: 0.5; cursor: default;">Actif</button>`}
@@ -214,10 +228,32 @@ function renderProgramsList() {
     });
 
     html += `
-        <button class="btn-add-set" style="margin-top: 24px;" onclick="switchView('editor', 'new')">+ Créer un nouveau programme</button>
+        <button class="btn-add-set" style="margin-top: 16px;" onclick="switchView('editor', 'new')">+ Créer un nouveau programme</button>
+        <button class="btn-add-set" style="margin-top: 10px; border-style: solid;" onclick="document.getElementById('import-prog-input').click()">📥 Importer un programme partagé (.json)</button>
+        <input type="file" id="import-prog-input" accept=".json" style="display: none;" onchange="importSingleProgram(event)">
     </div>`;
 
     mainContent.innerHTML = html;
+}
+
+/**
+ * Résout le nom d'un exercice à partir de la séance sauvegardée ou de tous les programmes existants.
+ * @param {Object} session - La séance d'historique
+ * @param {string} exId - L'ID de l'exercice
+ * @returns {string} Le nom de l'exercice
+ */
+function resolveExerciseName(session, exId) {
+    if (session && session.exerciseNames && session.exerciseNames[exId]) {
+        return session.exerciseNames[exId];
+    }
+    const allPrograms = getMyPrograms();
+    for (const prog of allPrograms) {
+        for (const exList of Object.values(prog.exercises || {})) {
+            const found = exList.find(e => e.id === exId);
+            if (found && found.name) return found.name;
+        }
+    }
+    return exId;
 }
 
 /**
@@ -246,10 +282,7 @@ function renderHistory() {
         Object.entries(session.data).forEach(([exId, sets]) => {
             let validatedSets = sets.filter(s => s.checked);
             if (validatedSets.length > 0) {
-                let exName = exId;
-                const activeProgExos = getProgExo(session.dayId) || [];
-                const foundEx = activeProgExos.find(e => e.id === exId);
-                if (foundEx) exName = foundEx.name;
+                const exName = resolveExerciseName(session, exId);
 
                 detailsHtml += `<div class="history-ex-title">
                                     <span>${escapeHTML(exName)}</span>
@@ -260,7 +293,9 @@ function renderHistory() {
                     if (s.checked) {
                         totalSets++;
                         if (s.kg && s.reps) totalVol += (parseFloat(s.kg) * parseInt(s.reps));
-                        detailsHtml += `<li>Série ${idx + 1} : ${escapeHTML(s.kg) || 0} kg × ${escapeHTML(s.reps) || 0} reps <button class="btn-delete-history" onclick="deleteHistorySet(${session.id}, '${exId}', ${idx})" title="Supprimer cette série">${deleteIcon}</button></li>`;
+                        const oneRm = calcOneRM(s.kg, s.reps);
+                        const oneRmTag = oneRm > 0 ? `<span class="history-1rm-tag">1RM ~${oneRm}kg</span>` : '';
+                        detailsHtml += `<li>Série ${idx + 1} : ${escapeHTML(s.kg) || 0} kg × ${escapeHTML(s.reps) || 0} reps ${oneRmTag} <button class="btn-delete-history" onclick="deleteHistorySet(${session.id}, '${exId}', ${idx})" title="Supprimer cette série">${deleteIcon}</button></li>`;
                     }
                 });
                 detailsHtml += `</ul>`;
@@ -279,7 +314,7 @@ function renderHistory() {
             <div class="history-title">${escapeHTML(session.dayName)}</div>
             <div class="history-stats">
                 Séries validées : <b>${totalSets}</b><br>
-                Volume total : ${totalVol > 0 ? `<b>${totalVol} kg</b>` : '-'}
+                Volume total : ${totalVol > 0 ? `<b>${Math.round(totalVol)} kg</b>` : '-'}
                 ${durationStr ? `<br>Durée : <b>${durationStr}</b>` : ''}
             </div>
             ${detailsHtml}
@@ -291,7 +326,103 @@ function renderHistory() {
 }
 
 /**
- * Affiche l'onglet Statistiques, incluant le volume cumulé et le graphique des 10 dernières séances.
+ * Calcule le nombre de semaines consécutives avec au moins 1 entraînement.
+ * @returns {number} Nombre de semaines consécutives
+ */
+function calculateWeeklyStreak() {
+    if (!historyData || historyData.length === 0) return 0;
+    const getMonday = (ts) => {
+        const d = new Date(ts);
+        d.setHours(0, 0, 0, 0);
+        const day = d.getDay() || 7;
+        d.setDate(d.getDate() - day + 1);
+        return d.getTime();
+    };
+    const activeWeeks = new Set(historyData.map(s => getMonday(s.date)));
+    const ONE_WEEK = 7 * 24 * 3600 * 1000;
+    let checkMonday = getMonday(Date.now());
+    if (!activeWeeks.has(checkMonday)) {
+        // Si pas encore entraîné cette semaine, on vérifie depuis la semaine dernière
+        checkMonday -= ONE_WEEK;
+    }
+    let streak = 0;
+    while (activeWeeks.has(checkMonday)) {
+        streak++;
+        checkMonday -= ONE_WEEK;
+    }
+    return streak;
+}
+
+/**
+ * Met à jour dynamiquement le graphique de progression d'un exercice spécifique dans l'onglet Stats.
+ * @param {string} exId - L'ID de l'exercice sélectionné
+ */
+window.updateExerciseChart = function(exId) {
+    const container = document.getElementById('ex-chart-wrapper');
+    if (!container) return;
+
+    const sortedHistory = [...historyData].sort((a, b) => a.date - b.date);
+    const points = [];
+
+    sortedHistory.forEach(session => {
+        const sets = session.data && session.data[exId];
+        if (!sets) return;
+        let maxKg = 0;
+        let max1RM = 0;
+        sets.forEach(s => {
+            if (s.checked && s.kg && s.reps) {
+                const w = parseFloat(s.kg);
+                const rm = calcOneRM(w, s.reps);
+                if (w > maxKg) maxKg = w;
+                if (rm > max1RM) max1RM = rm;
+            }
+        });
+        if (maxKg > 0) {
+            const dateObj = new Date(session.date);
+            const day = String(dateObj.getDate()).padStart(2, '0');
+            const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+            points.push({ date: `${day}/${month}`, maxKg, max1RM });
+        }
+    });
+
+    if (points.length === 0) {
+        container.innerHTML = '<div style="font-size: 13px; color: var(--text-sec); padding: 20px 0;">Aucune charge enregistrée pour cet exercice.</div>';
+        return;
+    }
+
+    const recent = points.slice(-10);
+    const maxVal = Math.max(...recent.map(p => p.max1RM), 1);
+    const MAX_BAR_PX = 90;
+
+    let barsHtml = '';
+    recent.forEach(p => {
+        const hPx = Math.max(Math.round((p.max1RM / maxVal) * MAX_BAR_PX), 4);
+        barsHtml += `
+            <div class="chart-bar-wrapper">
+                <span class="chart-value">${p.maxKg}kg</span>
+                <div class="chart-bar" style="height: ${hPx}px; background: linear-gradient(0deg, rgba(179, 136, 255, 0.2), var(--secondary));"></div>
+                <div style="display: flex; flex-direction: column; align-items: center; margin-top: 8px;">
+                    <span class="chart-label" style="margin-top: 0;">${p.date}</span>
+                    <span class="chart-label" style="margin-top: 2px; font-size: 9px; color: var(--secondary);">1RM ${p.max1RM}</span>
+                </div>
+            </div>
+        `;
+    });
+
+    const bestOverall = Math.max(...points.map(p => p.maxKg));
+    const best1RMOverall = Math.max(...points.map(p => p.max1RM));
+
+    container.innerHTML = `
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: var(--text-sec); margin-bottom: 8px;">
+            <span>Record Charge : <b style="color: var(--text);">${bestOverall} kg</b></span>
+            <span>Record 1RM estimé : <b style="color: var(--secondary);">${best1RMOverall} kg</b></span>
+        </div>
+        <div class="chart-container">${barsHtml}</div>
+    `;
+};
+
+/**
+ * Affiche l'onglet Statistiques, incluant le volume cumulé, l'assiduité 28j, le graphique global et le suivi par exercice.
  */
 function renderStats() {
     if (historyData.length === 0) {
@@ -301,10 +432,8 @@ function renderStats() {
 
     let totalVolume = 0;
     let totalWorkouts = historyData.length;
+    const streakWeeks = calculateWeeklyStreak();
 
-    // Calculer le volume pour chaque séance (dans l'ordre chronologique pour le graph)
-    // historyData est stocké dans l'ordre d'insertion (ancien -> récent) ou inverse ?
-    // Non, il faut le trier par date croissante pour le graphique, et on prend les 10 dernières
     const sortedHistory = [...historyData].sort((a, b) => a.date - b.date); 
     
     const sessionsVolume = sortedHistory.map(session => {
@@ -315,7 +444,6 @@ function renderStats() {
             });
         });
         totalVolume += vol;
-        // Format court: ex "14 fév"
         const dateObj = new Date(session.date);
         const day = String(dateObj.getDate()).padStart(2, '0');
         const month = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -323,18 +451,37 @@ function renderStats() {
         return {
             date: `${day}/${month}`,
             dayStr: dayStr,
-            vol: vol
+            vol: Math.round(vol)
         };
     });
 
-    // 10 Dernières pour le graph
+    // Heatmap des 28 derniers jours
+    const workoutDaysSet = new Set(
+        historyData.map(s => {
+            const d = new Date(s.date);
+            return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+        })
+    );
+    let heatmapHtml = '<div class="heatmap-grid">';
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    for (let i = 27; i >= 0; i--) {
+        const d = new Date(today.getTime() - i * 24 * 3600 * 1000);
+        const key = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+        const active = workoutDaysSet.has(key);
+        const label = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+        heatmapHtml += `<div class="heatmap-cell ${active ? 'active' : ''}" title="${label}">${d.getDate()}</div>`;
+    }
+    heatmapHtml += '</div>';
+
+    // 10 Dernières séances pour le graph de volume
     const recentSessions = sessionsVolume.slice(-10);
     const maxVol = Math.max(...recentSessions.map(s => s.vol), 1); 
-    const MAX_BAR_PX = 90; // Hauteur max en pixels pour la barre
+    const MAX_BAR_PX = 90;
 
     let chartHtml = '';
     recentSessions.forEach(s => {
-        const hPx = Math.max(Math.round((s.vol / maxVol) * MAX_BAR_PX), 4); // Min 4px
+        const hPx = Math.max(Math.round((s.vol / maxVol) * MAX_BAR_PX), 4);
         chartHtml += `
             <div class="chart-bar-wrapper">
                 <span class="chart-value">${s.vol > 0 ? (s.vol >= 1000 ? (s.vol/1000).toFixed(1) + 'k' : s.vol) : ''}</span>
@@ -347,6 +494,23 @@ function renderStats() {
         `;
     });
 
+    // Liste de tous les exercices pratiqués dans l'historique pour le sélecteur
+    const practicedExMap = new Map();
+    sortedHistory.forEach(session => {
+        Object.entries(session.data || {}).forEach(([exId, sets]) => {
+            if (sets.some(s => s.checked && s.kg)) {
+                practicedExMap.set(exId, resolveExerciseName(session, exId));
+            }
+        });
+    });
+
+    let exOptionsHtml = '';
+    let firstExId = null;
+    practicedExMap.forEach((name, id) => {
+        if (!firstExId) firstExId = id;
+        exOptionsHtml += `<option value="${escapeHTML(id)}">${escapeHTML(name)}</option>`;
+    });
+
     mainContent.innerHTML = `
         <div class="stats-container">
             <h2 style="font-size: 20px; color: var(--text); display: flex; align-items: center; gap: 8px;">
@@ -355,25 +519,48 @@ function renderStats() {
                 </svg>
                 Impact Global
             </h2>
-            <div style="display: flex; gap: 16px;">
-                <div class="stat-card" style="flex: 1;">
-                    <div style="font-size: 13px; color: var(--text-sec);">Séances validées</div>
-                    <div class="stat-number">${totalWorkouts}</div>
+            <div style="display: flex; gap: 12px;">
+                <div class="stat-card" style="flex: 1; padding: 12px;">
+                    <div style="font-size: 12px; color: var(--text-sec);">Séances</div>
+                    <div class="stat-number" style="font-size: 26px;">${totalWorkouts}</div>
                 </div>
-                <div class="stat-card" style="flex: 1;">
-                    <div style="font-size: 13px; color: var(--text-sec);">Volume total</div>
-                    <div class="stat-number" style="font-size: 24px;">${totalVolume.toLocaleString('fr-FR')} <span style="font-size: 14px">kg</span></div>
+                <div class="stat-card" style="flex: 1; padding: 12px;">
+                    <div style="font-size: 12px; color: var(--text-sec);">Série (Streak)</div>
+                    <div class="stat-number" style="font-size: 26px;">🔥 ${streakWeeks}<span style="font-size: 12px"> sem</span></div>
+                </div>
+                <div class="stat-card" style="flex: 1.2; padding: 12px;">
+                    <div style="font-size: 12px; color: var(--text-sec);">Volume total</div>
+                    <div class="stat-number" style="font-size: 20px;">${Math.round(totalVolume).toLocaleString('fr-FR')} <span style="font-size: 12px">kg</span></div>
                 </div>
             </div>
+
+            <div class="stat-card">
+                <h3 style="font-size: 14px; text-align: left; margin-bottom: 10px; color: var(--text-sec);">Assiduité (28 derniers jours)</h3>
+                ${heatmapHtml}
+            </div>
             
-            <div class="stat-card" style="margin-top: 8px;">
-                <h3 style="font-size: 14px; text-align: left; margin-bottom: 8px; color: var(--text-sec);">Progression (10 dernières séances)</h3>
+            ${firstExId ? `
+            <div class="stat-card">
+                <h3 style="font-size: 14px; text-align: left; margin-bottom: 10px; color: var(--text-sec);">Progression par Exercice (Charge & 1RM)</h3>
+                <select class="stats-ex-select" onchange="updateExerciseChart(this.value)">
+                    ${exOptionsHtml}
+                </select>
+                <div id="ex-chart-wrapper"></div>
+            </div>
+            ` : ''}
+
+            <div class="stat-card">
+                <h3 style="font-size: 14px; text-align: left; margin-bottom: 8px; color: var(--text-sec);">Volume global (10 dernières séances)</h3>
                 <div class="chart-container">
                     ${chartHtml}
                 </div>
             </div>
         </div>
     `;
+
+    if (firstExId) {
+        updateExerciseChart(firstExId);
+    }
 }
 
 window.deleteHistorySession = function (sessionId) {

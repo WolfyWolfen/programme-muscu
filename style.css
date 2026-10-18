@@ -926,3 +926,229 @@ main {
     margin-bottom: 4px;
     color: var(--text);
 }
+
+/* =============================================
+   NOUVEAUTÉS V3.1 (PR, NOTES, PROGRESSION, STATS)
+   ============================================= */
+.workout-progress-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    margin-bottom: 20px;
+}
+
+.workout-progress-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin-bottom: 6px;
+}
+
+.workout-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--surface-light);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.workout-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    border-radius: 99px;
+    transition: width 0.3s ease;
+}
+
+.ex-best-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffd54f;
+    background: rgba(255, 213, 79, 0.12);
+    border: 1px solid rgba(255, 213, 79, 0.3);
+    padding: 3px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.ex-note-input {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-sec);
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.ex-note-input:focus {
+    border-color: var(--primary);
+    color: var(--text);
+}
+
+.set-block {
+    margin-bottom: 12px;
+}
+
+.set-block .set-row {
+    margin-bottom: 2px;
+}
+
+.set-number {
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.set-number:active {
+    background: var(--primary-dim);
+    color: var(--primary);
+}
+
+.set-prev-hint {
+    font-size: 11px;
+    color: var(--text-sec);
+    padding-left: 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.85;
+}
+
+.pr-badge {
+    font-size: 10px;
+    font-weight: 800;
+    color: #000;
+    background: linear-gradient(90deg, #ffd54f, #ffb300);
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+
+.btn-step-rep {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 6px;
+    border-radius: 6px;
+    margin-left: 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.btn-step-rep:active {
+    background: var(--primary-dim);
+}
+
+.plate-calc-trigger {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+#plate-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.plate-badge {
+    background: var(--primary-dim);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    color: var(--primary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.btn-icon-action {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.btn-icon-action:active {
+    background: var(--primary-dim);
+    border-color: var(--primary);
+}
+
+.history-1rm-tag {
+    font-size: 10px;
+    color: var(--secondary);
+    background: rgba(179, 136, 255, 0.12);
+    border: 1px solid rgba(179, 136, 255, 0.25);
+    padding: 1px 6px;
+    border-radius: 8px;
+    margin-left: 4px;
+}
+
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.heatmap-cell {
+    height: 28px;
+    border-radius: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-sec);
+    font-weight: 600;
+}
+
+.heatmap-cell.active {
+    background: var(--primary-dim);
+    border-color: var(--primary);
+    color: var(--primary);
+    font-weight: 800;
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.2);
+}
+
+.stats-ex-select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    outline: none;
+}
+
+.stats-ex-select:focus {
+    border-color: var(--primary);
+}

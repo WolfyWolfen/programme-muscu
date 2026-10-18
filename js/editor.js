@@ -39,7 +39,7 @@ function renderProgramEditor(progId) {
         <div style="margin-bottom: 24px;">
             <label style="font-size: 13px; color: var(--text-sec); text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">Nom du Programme</label>
             <input type="text" value="${escapeHTML(editingProgram.name)}" placeholder="Ex: PPL 3 Jours" 
-                   onchange="editingProgram.name = this.value" 
+                   oninput="editingProgram.name = this.value" 
                    style="width: 100%; padding: 14px; margin-top: 8px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-light); color: var(--text); font-size: 16px; font-weight: 600;">
         </div>
         <div class="editor-days-list" style="display: flex; flex-direction: column; gap: 24px;">
@@ -54,7 +54,7 @@ function renderProgramEditor(progId) {
                 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px;">
                     <div style="flex: 1;">
                         <input type="text" value="${escapeHTML(day.name)}" placeholder="Nom (ex: Lundi, Push)" 
-                               onchange="editingProgram.days[${dIdx}].name = this.value"
+                               oninput="editingProgram.days[${dIdx}].name = this.value"
                                style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 15px; font-weight: bold;">
                     </div>
                     <div style="display: flex; gap: 4px; align-items: center;">
@@ -69,7 +69,7 @@ function renderProgramEditor(progId) {
                     </div>
                 </div>
                 <input type="text" value="${escapeHTML(day.focus)}" placeholder="Focus (ex: Pecs & Triceps)" 
-                       onchange="editingProgram.days[${dIdx}].focus = this.value"
+                       oninput="editingProgram.days[${dIdx}].focus = this.value"
                        style="width: 100%; padding: 10px; margin-bottom: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 14px;">
                 
                 <h4 style="font-size: 13px; color: var(--text-sec); margin-bottom: 8px; text-transform: uppercase;">Exercices</h4>
@@ -85,7 +85,7 @@ function renderProgramEditor(progId) {
                 <div style="display: flex; flex-direction: column; gap: 8px; background: var(--bg); padding: 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.05);">
                     <div style="display: flex; justify-content: space-between; gap: 8px; align-items: flex-start;">
                         <input type="text" value="${escapeHTML(ex.name)}" placeholder="Nom de l'exercice" 
-                               onchange="editingProgram.exercises['${day.id}'][${eIdx}].name = this.value"
+                               oninput="editingProgram.exercises['${day.id}'][${eIdx}].name = this.value"
                                style="flex: 1; min-width: 0; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-light); color: var(--text); font-size: 14px; font-weight: 600;">
                         
                         <div style="display: flex; gap: 4px; flex-shrink: 0;">
@@ -100,13 +100,13 @@ function renderProgramEditor(progId) {
                         <div style="flex: 1; display:flex; align-items: center; background: var(--surface-light); border-radius: var(--radius-sm); padding: 0 10px;">
                             <span style="font-size: 12px; color: var(--text-sec); margin-right: 8px;">Séries</span>
                             <input type="number" value="${ex.sets}" 
-                                   onchange="editingProgram.exercises['${day.id}'][${eIdx}].sets = parseInt(this.value) || 3"
+                                   oninput="editingProgram.exercises['${day.id}'][${eIdx}].sets = parseInt(this.value) || 3"
                                    style="width: 100%; padding: 10px 0; border: none; background: transparent; color: var(--text); outline: none; text-align: right; font-size: 15px; font-weight: bold;">
                         </div>
                         <div style="flex: 1; display:flex; align-items: center; background: var(--surface-light); border-radius: var(--radius-sm); padding: 0 10px;">
                             <span style="font-size: 12px; color: var(--text-sec); margin-right: 8px;">Repos (s)</span>
                             <input type="number" value="${ex.rest}" step="15"
-                                   onchange="editingProgram.exercises['${day.id}'][${eIdx}].rest = parseInt(this.value) || 60"
+                                   oninput="editingProgram.exercises['${day.id}'][${eIdx}].rest = parseInt(this.value) || 0"
                                    style="width: 100%; padding: 10px 0; border: none; background: transparent; color: var(--text); outline: none; text-align: right; font-size: 15px; font-weight: bold;">
                         </div>
                     </div>
@@ -176,12 +176,12 @@ window.editorAddDay = function () {
  * @param {number} index - Index de la journée à supprimer
  */
 window.editorRemoveDay = function (index) {
-    if (confirm('Supprimer ce jour et tous ses exercices ?')) {
+    showConfirm('Supprimer ce jour et tous ses exercices ?', () => {
         const dayId = editingProgram.days[index].id;
         editingProgram.days.splice(index, 1);
         delete editingProgram.exercises[dayId];
         renderProgramEditor(editingProgram.id);
-    }
+    });
 };
 
 /**

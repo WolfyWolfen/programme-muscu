@@ -1,6 +1,6 @@
 // sw.js (Service Worker)
 
-const CACHE_NAME = 'prog-muscu-v3.0.2';
+const CACHE_NAME = 'prog-muscu-v3.1.0';
 const urlsToCache = [
     './',
     './index.html',

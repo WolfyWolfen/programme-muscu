@@ -7,33 +7,6 @@ let activeWorkoutDay = null;
 let currentWorkoutData = {};
 let historyData = [];
 
-let audioCtx = null;
-let audioUnlocked = false;
-
-/**
- * Initialise (ou retourne) le contexte audio global unique (singleton).
- * @returns {AudioContext} Le contexte audio natif
- */
-function getAudioContext() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    return audioCtx;
-}
-
-/**
- * Déverrouille l'audio sur iOS lors de la première interaction utilisateur ("touch" initial).
- */
-function unlockAudio() {
-    if (audioUnlocked) return;
-    const ctx = getAudioContext();
-    ctx.resume().then(() => { audioUnlocked = true; });
-    document.removeEventListener('touchstart', unlockAudio);
-    document.removeEventListener('click', unlockAudio);
-}
-document.addEventListener('touchstart', unlockAudio, { once: true });
-document.addEventListener('click', unlockAudio, { once: true });
-
 /**
  * Valide la création ou la sélection d'un profil utilisateur.
  * @param {string|null} forcedName - Nom forcé (utile si appelé programmatiquement depuis un bouton existant)
@@ -65,6 +38,15 @@ window.confirmProfile = function (forcedName = null) {
 window.switchProfile = function () {
     document.getElementById('profile-overlay').classList.remove('hidden');
     renderProfileModal();
+};
+
+/**
+ * Ferme la modale de sélection de profil si un profil est déjà actif.
+ */
+window.closeProfileModal = function () {
+    if (currentUserId) {
+        document.getElementById('profile-overlay').classList.add('hidden');
+    }
 };
 
 /**

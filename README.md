@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 3.0.2** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 3.1.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -8,13 +8,12 @@ Application web progressive (PWA) de suivi d'entraînement musculaire. Accessibl
 
 ## ✨ Fonctionnalités
 
-- **Éditeur de Programmes** — Créez, modifiez et partagez une infinité de programmes sportifs complets
+- **Éditeur & Partage de Programmes** — Créez, dupliquez et exportez/importez individuellement vos programmes sportifs
+- **Surcharge Progressive & Records (PR)** — Rappel de la séance précédente sous chaque série, calcul du 1RM estimé (Epley), détection automatique des PR 🏆 et notes persistantes par exercice
+- **Statistiques Avancées** — Courbe de progression par exercice (Charge & 1RM), calendrier d'assiduité (28 jours), série de semaines (*Streak* 🔥) et volume global
+- **Confort Mobile & Anti-veille** — Maintien de l'écran allumé (*Wake Lock*), chronos basés sur l'horloge système (résistants à la mise en veille), calculateur de disques 🧮 et barre de progression de séance
 - **Multi-profils & Isolation** — Données strictement liées au profil choisi, sans mélange
-- **Suivi des séries** — Poids & reps pré-remplis depuis votre dernière séance
-- **Chrono de repos** — Temps automatique et personnalisable par exercice
-- **Chrono de séance** — Démarrage manuel, durée enregistrée dans l'historique
 - **Historique complet** — Suppression par séance, exercice ou série isolée
-- **Durée estimée** — Affichée sur chaque journée dans l'accueil
 - **100% offline** — Service Worker + cache, aucune connexion requise après le 1er chargement
 - **Mise à jour automatique** — Les nouveaux ajouts arrivent sans action de l'utilisateur
 
@@ -79,6 +78,11 @@ Les utilisateurs recevront la mise à jour automatiquement au prochain lancement
 
 ## 📜 Historique des versions (Changelog)
 
+- **v3.1.0 : Surcharge Progressive, Stats par Exercice & Confort Mobile** :
+  - **Séance** : Affichage de la performance précédente sous chaque série, détection automatique des Records Personnels (`🏆 PR`) et du Max historique, notes persistantes par exercice, bouton rapide `+1 rep`, calculateur de disques (`🧮`), barre de progression en direct et maintien de l'écran allumé (*Screen Wake Lock*).
+  - **Chronomètres** : Timer de repos recalibré sur l'horloge système (insensible à la mise en veille du téléphone) et démarrage automatique du chrono de séance dès la première série validée.
+  - **Statistiques** : Ajout du suivi par exercice (charge max & 1RM estimé Epley), calendrier d'assiduité sur 28 jours et compteur de semaines consécutives (*Streak* 🔥).
+  - **Programmes** : Boutons pour dupliquer un programme, l'exporter seul en `.json` ou importer un programme partagé.
 - **v3.0.2** : Ajout du nom du jour en 3 lettres (ex: LUN, MAR) sous la date dans les statistiques.
 - **v3.0.1** : Hotfix d'un bug CSS (Flexbox) empêchant les barres du graphique de s'afficher correctement sur certains navigateurs mobiles. Augmentation de la version du Service Worker pour forcer la mise à jour du cache.
 

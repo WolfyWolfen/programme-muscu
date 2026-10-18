@@ -195,3 +195,127 @@ function doRestore(data) {
     alert("Restauration réussie ! L'application va se recharger avec vos données.");
     window.location.reload();
 }
+
+/**
+ * Récupère les notes enregistrées par l'utilisateur pour chaque exercice.
+ * @returns {Object} Dictionnaire { [exId]: "note" }
+ */
+function getExerciseNotes() {
+    return JSON.parse(localStorage.getItem(getKey('my_exercise_notes'))) || {};
+}
+
+/**
+ * Sauvegarde une note pour un exercice spécifique.
+ * @param {string} exId - L'identifiant de l'exercice
+ * @param {string} note - Le contenu de la note
+ */
+window.saveExerciseNote = function(exId, note) {
+    const notes = getExerciseNotes();
+    if (note && note.trim()) {
+        notes[exId] = note.trim();
+    } else {
+        delete notes[exId];
+    }
+    localStorage.setItem(getKey('my_exercise_notes'), JSON.stringify(notes));
+};
+
+/**
+ * Calcule le meilleur 1RM et la meilleure charge historiques pour un exercice donné (hors séance en cours).
+ * @param {string} exId - L'identifiant de l'exercice
+ * @param {number|null} excludeSessionId - ID de séance à exclure (utile pour l'affichage dans l'historique)
+ * @returns {{max1RM: number, maxKg: number}} Les records historiques de l'exercice
+ */
+function getHistoricalBest(exId, excludeSessionId = null) {
+    let max1RM = 0;
+    let maxKg = 0;
+    (historyData || []).forEach(session => {
+        if (excludeSessionId && String(session.id) === String(excludeSessionId)) return;
+        const sets = session.data && session.data[exId];
+        if (!sets) return;
+        sets.forEach(s => {
+            if (s.checked && s.kg && s.reps) {
+                const w = parseFloat(s.kg);
+                const oneRm = calcOneRM(w, s.reps);
+                if (w > maxKg) maxKg = w;
+                if (oneRm > max1RM) max1RM = oneRm;
+            }
+        });
+    });
+    return { max1RM, maxKg };
+}
+
+/**
+ * Duplique un programme existant et l'ajoute à la liste des programmes.
+ * @param {string} progId - L'ID du programme à dupliquer
+ */
+window.duplicateProgram = function(progId) {
+    const programs = getMyPrograms();
+    const orig = programs.find(p => p.id === progId);
+    if (!orig) return;
+
+    const copy = JSON.parse(JSON.stringify(orig));
+    copy.id = 'prog_' + Date.now();
+    copy.name = orig.name + ' (Copie)';
+    programs.push(copy);
+    localStorage.setItem('all_custom_programs', JSON.stringify(programs));
+    showToast('Programme dupliqué');
+    renderProgramsList();
+};
+
+/**
+ * Exporte uniquement un programme spécifique en fichier JSON pour le partager.
+ * @param {string} progId - L'ID du programme à exporter
+ */
+window.exportSingleProgram = function(progId) {
+    const programs = getMyPrograms();
+    const prog = programs.find(p => p.id === progId);
+    if (!prog) return;
+
+    const payload = { _type: 'single_program_v3', program: prog };
+    const json = JSON.stringify(payload, null, 2);
+    const blob = new Blob([json], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safeName = prog.name.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+    a.download = `programme_${safeName}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Programme exporté');
+};
+
+/**
+ * Importe un programme individuel depuis un fichier JSON sans écraser les autres données.
+ * @param {Event} event - L'événement du champ file
+ */
+window.importSingleProgram = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const parsed = JSON.parse(e.target.result);
+            const prog = parsed.program || (parsed.days && parsed.exercises ? parsed : null);
+            if (!prog || !Array.isArray(prog.days) || !prog.exercises) {
+                throw new Error('Format de programme invalide');
+            }
+            const programs = getMyPrograms();
+            const newProg = JSON.parse(JSON.stringify(prog));
+            newProg.id = 'prog_' + Date.now();
+            if (programs.some(p => p.name === newProg.name)) {
+                newProg.name += ' (Importé)';
+            }
+            programs.push(newProg);
+            localStorage.setItem('all_custom_programs', JSON.stringify(programs));
+            showToast('Programme importé !');
+            renderProgramsList();
+        } catch (err) {
+            alert("Fichier invalide. Assurez-vous d'importer un fichier de programme JSON valide.");
+            console.error(err);
+        }
+        event.target.value = '';
+    };
+    reader.readAsText(file);
+};
+
