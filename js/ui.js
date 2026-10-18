@@ -146,9 +146,77 @@ function renderHome() {
         `;
     });
 
-    html += `<div class="app-version-footer" onclick="forceAppUpdate()" title="Toucher pour vérifier les mises à jour" style="cursor: pointer;">Mon Programme PWA — ${APP_VERSION} ↻</div>`;
+    html += `<div class="app-version-footer" onclick="forceAppUpdate()" title="Toucher pour vérifier les mises à jour" style="cursor: pointer;">Ma Séance PWA — ${APP_VERSION} ↻</div>`;
     mainContent.innerHTML = html;
 }
+
+const APP_THEMES = [
+    { id: 'cyan', name: 'Cyan Cyber', sub: 'Cyan & Violet', primary: '#00e5ff', secondary: '#b388ff' },
+    { id: 'crimson', name: 'Rouge Titan', sub: 'Crimson & Orange', primary: '#ff3d5a', secondary: '#ff9100' },
+    { id: 'emerald', name: 'Émeraude', sub: 'Vert Néon & Cyan', primary: '#00e676', secondary: '#00e5ff' },
+    { id: 'gold', name: 'Or Olympique', sub: 'Ambre & Corail', primary: '#ffab00', secondary: '#ff5252' },
+    { id: 'violet', name: 'Ultra Violet', sub: 'Pourpre & Rose', primary: '#b388ff', secondary: '#ff4081' },
+    { id: 'cobalt', name: 'Bleu Glace', sub: 'Cobalt & Aqua', primary: '#448aff', secondary: '#18ffff' }
+];
+
+function getCurrentTheme() {
+    if (typeof currentUserId !== 'undefined' && currentUserId) {
+        return localStorage.getItem(getKey('my_app_theme')) || localStorage.getItem('my_app_theme') || 'cyan';
+    }
+    return localStorage.getItem('my_app_theme') || 'cyan';
+}
+
+window.applyAppTheme = function(themeId, notify = false) {
+    const valid = APP_THEMES.find(t => t.id === themeId) ? themeId : 'cyan';
+    if (valid === 'cyan') {
+        document.documentElement.removeAttribute('data-theme');
+    } else {
+        document.documentElement.setAttribute('data-theme', valid);
+    }
+    localStorage.setItem('my_app_theme', valid);
+    if (typeof currentUserId !== 'undefined' && currentUserId) {
+        localStorage.setItem(getKey('my_app_theme'), valid);
+    }
+    const cards = document.querySelectorAll('.theme-card');
+    cards.forEach(c => c.classList.toggle('active', c.dataset.themeId === valid));
+    if (notify && typeof showToast === 'function') {
+        const themeObj = APP_THEMES.find(t => t.id === valid);
+        showToast(`Thème : ${themeObj ? themeObj.name : valid}`);
+    }
+};
+
+window.openThemeModal = function() {
+    let modal = document.getElementById('theme-picker-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'theme-picker-modal';
+        modal.className = 'plate-modal';
+        document.body.appendChild(modal);
+    }
+    const activeTheme = getCurrentTheme();
+    const cardsHtml = APP_THEMES.map(t => `
+        <button type="button" class="theme-card ${t.id === activeTheme ? 'active' : ''}" data-theme-id="${t.id}" onclick="applyAppTheme('${t.id}', true)">
+            <span class="theme-swatch" style="background: linear-gradient(135deg, ${t.primary}, ${t.secondary});"></span>
+            <div class="theme-card-info">
+                <span class="theme-card-name">${t.name}</span>
+                <span class="theme-card-sub">${t.sub}</span>
+            </div>
+        </button>
+    `).join('');
+
+    modal.innerHTML = `
+        <div class="confirm-backdrop" onclick="document.getElementById('theme-picker-modal').classList.add('hidden')"></div>
+        <div class="plate-box" style="max-width: 360px;">
+            <h3 style="color: var(--primary); font-size: 18px; margin-bottom: 4px;">🎨 Thème de l'application</h3>
+            <p style="font-size: 12px; color: var(--text-sec);">Personnalisez les couleurs de votre interface</p>
+            <div class="theme-grid">
+                ${cardsHtml}
+            </div>
+            <button class="confirm-cancel" style="width: 100%;" onclick="document.getElementById('theme-picker-modal').classList.add('hidden')">Fermer</button>
+        </div>
+    `;
+    modal.classList.remove('hidden');
+};
 
 /**
  * Force la suppression des caches du Service Worker et recharge l'application depuis le serveur.
@@ -254,7 +322,7 @@ function renderProgramsList() {
     const activeId = getActiveProgram().id;
     let html = '<div class="programs-list-container">';
 
-    const starSvg = '<svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="2" fill="rgba(0, 229, 255, 0.2)" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+    const starSvg = '<svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="2" fill="var(--primary-dim)" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
     const docSvg = '<svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--text-sec)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>';
     const copySvg = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
     const shareSvg = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>';
