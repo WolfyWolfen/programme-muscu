@@ -1299,13 +1299,39 @@ main {
 .set-prev-hint {
     font-size: 11px;
     color: var(--text-sec);
-    padding-left: 34px;
     margin-top: 6px;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: 8px;
     opacity: 0.95;
+}
+
+.hint-spacer-num {
+    width: 26px;
+    flex-shrink: 0;
+}
+
+.hint-col-kg {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    line-height: 1.2;
+}
+
+.hint-col-reps {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hint-spacer-actions {
+    width: 82px; /* 44px (btn-check) + 8px (gap) + 30px (btn-remove-set) */
+    flex-shrink: 0;
 }
 
 .pr-badge {
@@ -1317,24 +1343,18 @@ main {
     border-radius: 8px;
 }
 
-.rep-step-group {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: auto;
-}
-
 .btn-step-rep {
+    flex: 1;
     background: rgba(0, 229, 255, 0.1);
     border: 1px solid rgba(0, 229, 255, 0.3);
     color: var(--primary);
     font-family: inherit;
     font-size: 12px;
     font-weight: 700;
-    padding: 5px 10px;
+    padding: 6px 0;
+    text-align: center;
     border-radius: 8px;
     cursor: pointer;
-    flex-shrink: 0;
     transition: transform 0.12s, background 0.2s;
 }
 

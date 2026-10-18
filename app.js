@@ -1,4 +1,4 @@
-const APP_VERSION = 'v3.2.3'; // Mettre à jour à chaque modif majeure
+const APP_VERSION = 'v3.2.4'; // Mettre à jour à chaque modif majeure
 // =============================================
 // INITIALISATION
 // =============================================
