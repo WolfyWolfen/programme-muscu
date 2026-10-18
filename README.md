@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 3.2.6** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 3.3.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -78,6 +78,10 @@ Les utilisateurs recevront la mise à jour automatiquement au prochain lancement
 
 ## 📜 Historique des versions (Changelog)
 
+- **v3.3.0 : Créateur de Programme Avancé (Catalogue, Modèles & Accordéons)** :
+  - **Catalogue d'exercices intégré (`📚`)** : Plus de 35 exercices classés par groupe musculaire avec barre de recherche instantanée. Conserve les mêmes identifiants (`id`) entre vos différents programmes pour que votre historique de poids et vos PR suivent automatiquement.
+  - **Modèles rapides (`⚡`)** : Chargement en 1 clic des structures **PPL (3j)**, **Upper / Lower (4j)** ou **Full Body (3j)**.
+  - **Confort d'édition** : Journées pliables/dépliables en accordéon avec estimation de durée en direct, duplication d'une journée entière, sélecteur visuel d'icône sportive par jour et boutons tactiles `- / +` sur les séries et temps de repos (`-15s / +15s`).
 - **v3.2.1** : Hotfix mobile pour la largeur de la case `REPS` (déplacement du bouton `+1 rep` sous la série et suppression des flèches natives des champs numériques pour éviter que le nombre soit tronqué sous le texte `REPS`).
 - **v3.2.0 : Refonte Esthétique Glassmorphism & Animations** :
   - **Design & Lumière** : Fond atmosphérique avec halos cyan/violet, cartes en verre dépoli (*glassmorphism*) avec bordures spéculaires et barre de navigation flottante en capsule (*Floating Pill Dock*).

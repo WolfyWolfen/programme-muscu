@@ -1477,4 +1477,610 @@ main {
 
 .stats-ex-select:focus {
     border-color: var(--primary);
-}
+}
+
+/* =============================================
+   ÉDITEUR DE PROGRAMME AVANCÉ (V3.3)
+   ============================================= */
+.editor-top-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top-color: var(--border-top);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.editor-section-label {
+    font-size: 11px;
+    color: var(--primary);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+}
+
+.editor-prog-name-input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 6px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 700;
+    outline: none;
+}
+
+.editor-prog-name-input:focus {
+    border-color: var(--primary);
+}
+
+.editor-templates-bar {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+}
+
+.editor-tpl-label {
+    font-size: 11px;
+    color: var(--text-sec);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.editor-tpl-btns {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.editor-tpl-chip {
+    flex: 1;
+    min-width: 90px;
+    padding: 7px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    background: rgba(0, 229, 255, 0.08);
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+}
+
+.editor-tpl-chip:active {
+    transform: scale(0.95);
+    background: var(--primary-dim);
+}
+
+.editor-days-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.editor-day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top-color: var(--border-top);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.editor-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+}
+
+.editor-collapse-btn {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.editor-day-mini-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--primary-dim);
+    border: 1px solid rgba(0, 229, 255, 0.22);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.editor-day-mini-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.editor-day-summary {
+    flex: 1;
+    min-width: 0;
+}
+
+.editor-day-summary-title {
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.editor-day-summary-sub {
+    font-size: 11px;
+    color: var(--text-sec);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.editor-chevron {
+    color: var(--text-sec);
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+
+.editor-chevron.open {
+    transform: rotate(180deg);
+    color: var(--primary);
+}
+
+.editor-day-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.editor-action-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface-light);
+    color: var(--text-sec);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.editor-action-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+}
+
+.editor-action-btn.danger {
+    background: rgba(255, 23, 68, 0.14);
+    border-color: rgba(255, 23, 68, 0.3);
+    color: var(--danger);
+}
+
+.editor-day-body {
+    padding: 14px;
+}
+
+.editor-day-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.editor-input-bold {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    outline: none;
+}
+
+.editor-input-sub {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-sec);
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.editor-input-bold:focus,
+.editor-input-sub:focus {
+    border-color: var(--primary);
+    color: var(--text);
+}
+
+.editor-icon-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 0;
+    border-top: 1px dashed var(--border);
+    border-bottom: 1px dashed var(--border);
+}
+
+.editor-mini-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-sec);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.editor-icon-picker {
+    display: flex;
+    gap: 6px;
+}
+
+.editor-icon-opt {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text-sec);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editor-icon-opt svg {
+    width: 18px;
+    height: 18px;
+}
+
+.editor-icon-opt.selected {
+    background: var(--primary-dim);
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.25);
+}
+
+.editor-ex-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.editor-ex-item {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.editor-ex-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.editor-ex-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--surface-light);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.editor-ex-name-input {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface-light);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    outline: none;
+}
+
+.editor-ex-name-input:focus {
+    border-color: var(--primary);
+}
+
+.editor-ex-move-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.editor-ex-move-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-sec);
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.editor-ex-move-btn:disabled {
+    opacity: 0.25;
+    cursor: default;
+}
+
+.editor-ex-del-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 23, 68, 0.3);
+    background: rgba(255, 23, 68, 0.14);
+    color: var(--danger);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.editor-ex-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.editor-stepper-box {
+    flex: 1;
+    background: var(--surface-light);
+    border-radius: 8px;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.editor-stepper-label {
+    font-size: 11px;
+    color: var(--text-sec);
+    font-weight: 600;
+}
+
+.editor-stepper-btns {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.editor-stepper-btns button {
+    padding: 4px 7px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.editor-stepper-btns button:active {
+    background: var(--primary-dim);
+}
+
+.editor-stepper-btns input {
+    width: 36px;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: center;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.editor-stepper-btns input::-webkit-outer-spin-button,
+.editor-stepper-btns input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.editor-add-ex-row {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-editor-catalog {
+    flex: 2;
+    padding: 11px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(0, 229, 255, 0.35);
+    background: rgba(0, 229, 255, 0.1);
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-editor-custom {
+    flex: 1;
+    padding: 11px;
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--border);
+    background: transparent;
+    color: var(--text-sec);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Modale Catalogue d'exercices */
+#picker-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.picker-box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    max-height: 82vh;
+    background: #12161f;
+    border-top: 1px solid var(--border-top);
+    border-radius: 24px 24px 0 0;
+    padding: 20px 18px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.6);
+}
+
+.picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.picker-header h3 {
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.picker-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface-light);
+    color: var(--text-sec);
+    cursor: pointer;
+}
+
+.picker-search {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.picker-search:focus {
+    border-color: var(--primary);
+}
+
+.btn-custom-ex {
+    width: 100%;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    border: 1px dashed rgba(179, 136, 255, 0.4);
+    background: rgba(179, 136, 255, 0.08);
+    color: var(--secondary);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.picker-list {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-right: 4px;
+}
+
+.picker-cat-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+.picker-cat-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.picker-item-btn {
+    width: 100%;
+    padding: 11px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface-light);
+    color: var(--text);
+    font-family: inherit;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    text-align: left;
+}
+
+.picker-item-btn:active {
+    border-color: var(--primary);
+    background: var(--primary-dim);
+}
+
+.picker-item-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.picker-item-meta {
+    font-size: 11px;
+    color: var(--text-sec);
+    font-weight: 700;
+}
+

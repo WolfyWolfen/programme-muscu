@@ -1,53 +1,7 @@
 // js/storage.js
 
-/**
- * Génère automatiquement une icône vectorielle SVG cohérente avec le focus musculaire de la journée.
- * @param {Object} day - L'objet journée ({ id, name, focus, icon })
- * @returns {string} Le code SVG de l'icône
- */
-function getDayIcon(day) {
-    const text = `${day.name || ''} ${day.focus || ''}`.toLowerCase();
-
-    // 1. Cardio / Course / Coeur (Coeur avec pouls ECG)
-    if (text.includes('cardio') || text.includes('course') || text.includes('hiit') || text.includes('vélo') || text.includes('velo')) {
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
-            <polyline points="8 12 10.5 12 12 9.5 13.5 14.5 15 12 16.5 12"></polyline>
-        </svg>`;
-    }
-
-    // 2. Jambes / Quadri / Ischios / Squat / Lower (Rack à Squat / Barre chargée lourde)
-    if (text.includes('jambe') || text.includes('quad') || text.includes('ischio') || text.includes('leg') || text.includes('squat') || text.includes('lower') || text.includes('bas')) {
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <rect x="4" y="6" width="3" height="12" rx="1"></rect>
-            <rect x="17" y="6" width="3" height="12" rx="1"></rect>
-            <rect x="1.5" y="8" width="2.5" height="8" rx="0.5"></rect>
-            <rect x="20" y="8" width="2.5" height="8" rx="0.5"></rect>
-        </svg>`;
-    }
-
-    // 3. Dos & Biceps / Pull / Tirage (Buste musclé en V / Barre de traction)
-    if (text.includes('dos') || text.includes('pull') || text.includes('traction') || text.includes('tirage')) {
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="2" y1="4" x2="22" y2="4"></line>
-            <path d="M6 4v4l3 3v9"></path>
-            <path d="M18 4v4l-3 3v9"></path>
-            <circle cx="12" cy="7.5" r="2"></circle>
-            <line x1="9" y1="14" x2="15" y2="14"></line>
-        </svg>`;
-    }
-
-    // 4. Full Haut du Corps / Full Body / Épaules / Upper (Torse Athlétique / Double Biceps)
-    if (text.includes('full') || text.includes('haut') || text.includes('upper') || text.includes('épaule') || text.includes('epaule')) {
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="5" r="2.5"></circle>
-            <path d="M5 11c-1.5 0-2.5-1.5-2-3 .4-1.2 1.8-1.5 2.5-.5L7 10h10l1.5-2.5c.7-1 2.1-.7 2.5.5.5 1.5-.5 3-2 3l-2 2-1 8H8l-1-8-2-2z"></path>
-        </svg>`;
-    }
-
-    // 5. Pecs & Triceps / Push / Haltère (Haltère incliné à 45°)
-    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+const DAY_ICONS_MAP = {
+    dumbbell: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M6.5 6.5l11 11"></path>
         <path d="M21 21l-1-1"></path>
         <path d="M3 3l1 1"></path>
@@ -55,7 +9,55 @@ function getDayIcon(day) {
         <path d="M2 6l4-4"></path>
         <path d="M3 10l7-7"></path>
         <path d="M14 21l7-7"></path>
-    </svg>`;
+    </svg>`,
+    pullup: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="2" y1="4" x2="22" y2="4"></line>
+        <path d="M6 4v4l3 3v9"></path>
+        <path d="M18 4v4l-3 3v9"></path>
+        <circle cx="12" cy="7.5" r="2"></circle>
+        <line x1="9" y1="14" x2="15" y2="14"></line>
+    </svg>`,
+    cardio: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+        <polyline points="8 12 10.5 12 12 9.5 13.5 14.5 15 12 16.5 12"></polyline>
+    </svg>`,
+    barbell: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="2" y1="12" x2="22" y2="12"></line>
+        <rect x="4" y="6" width="3" height="12" rx="1"></rect>
+        <rect x="17" y="6" width="3" height="12" rx="1"></rect>
+        <rect x="1.5" y="8" width="2.5" height="8" rx="0.5"></rect>
+        <rect x="20" y="8" width="2.5" height="8" rx="0.5"></rect>
+    </svg>`,
+    upper: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="5" r="2.5"></circle>
+        <path d="M5 11c-1.5 0-2.5-1.5-2-3 .4-1.2 1.8-1.5 2.5-.5L7 10h10l1.5-2.5c.7-1 2.1-.7 2.5.5.5 1.5-.5 3-2 3l-2 2-1 8H8l-1-8-2-2z"></path>
+    </svg>`
+};
+
+/**
+ * Retourne la clé d'icône correspondant à une journée (soit explicite, soit déduite du texte).
+ * @param {Object} day - L'objet journée ({ id, name, focus, icon })
+ * @returns {string} Clé de l'icône ('dumbbell' | 'pullup' | 'cardio' | 'barbell' | 'upper')
+ */
+function resolveDayIconKey(day) {
+    if (day && day.icon && DAY_ICONS_MAP[day.icon]) {
+        return day.icon;
+    }
+    const text = `${day?.name || ''} ${day?.focus || ''}`.toLowerCase();
+    if (text.includes('cardio') || text.includes('course') || text.includes('hiit') || text.includes('vélo') || text.includes('velo')) return 'cardio';
+    if (text.includes('jambe') || text.includes('quad') || text.includes('ischio') || text.includes('leg') || text.includes('squat') || text.includes('lower') || text.includes('bas')) return 'barbell';
+    if (text.includes('dos') || text.includes('pull') || text.includes('traction') || text.includes('tirage')) return 'pullup';
+    if (text.includes('full') || text.includes('haut') || text.includes('upper') || text.includes('épaule') || text.includes('epaule')) return 'upper';
+    return 'dumbbell';
+}
+
+/**
+ * Génère automatiquement une icône vectorielle SVG cohérente avec le focus musculaire de la journée.
+ * @param {Object} day - L'objet journée ({ id, name, focus, icon })
+ * @returns {string} Le code SVG de l'icône
+ */
+function getDayIcon(day) {
+    return DAY_ICONS_MAP[resolveDayIconKey(day)] || DAY_ICONS_MAP.dumbbell;
 }
 
 /**
