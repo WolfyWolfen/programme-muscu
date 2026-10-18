@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 3.2.2** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 3.2.3** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 

@@ -362,7 +362,10 @@ window.renderSets = function (exId) {
                 <div class="set-prev-hint">
                     ${prevText}
                     ${prBadge}
-                    <button class="btn-step-rep" onclick="stepInput('${exId}', ${i}, 'reps', 1)" title="Ajouter 1 répétition">+1 rep</button>
+                    <div class="rep-step-group">
+                        <button class="btn-step-rep minus" onclick="stepInput('${exId}', ${i}, 'reps', -1)" title="Retirer 1 répétition">-1 rep</button>
+                        <button class="btn-step-rep plus" onclick="stepInput('${exId}', ${i}, 'reps', 1)" title="Ajouter 1 répétition">+1 rep</button>
+                    </div>
                 </div>
             </div>
         `;

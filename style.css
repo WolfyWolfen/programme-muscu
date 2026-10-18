@@ -1300,11 +1300,12 @@ main {
     font-size: 11px;
     color: var(--text-sec);
     padding-left: 34px;
-    margin-top: 4px;
+    margin-top: 6px;
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     gap: 8px;
-    opacity: 0.9;
+    opacity: 0.95;
 }
 
 .pr-badge {
@@ -1316,21 +1317,40 @@ main {
     border-radius: 8px;
 }
 
+.rep-step-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
+
 .btn-step-rep {
-    background: rgba(0, 229, 255, 0.08);
-    border: 1px solid rgba(0, 229, 255, 0.25);
+    background: rgba(0, 229, 255, 0.1);
+    border: 1px solid rgba(0, 229, 255, 0.3);
     color: var(--primary);
     font-family: inherit;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 6px;
+    padding: 5px 10px;
+    border-radius: 8px;
     cursor: pointer;
     flex-shrink: 0;
+    transition: transform 0.12s, background 0.2s;
+}
+
+.btn-step-rep.minus {
+    background: rgba(255, 23, 68, 0.12);
+    border-color: rgba(255, 23, 68, 0.35);
+    color: var(--danger);
 }
 
 .btn-step-rep:active {
+    transform: scale(0.92);
     background: var(--primary-dim);
+}
+
+.btn-step-rep.minus:active {
+    background: rgba(255, 23, 68, 0.25);
 }
 
 .plate-calc-trigger {
