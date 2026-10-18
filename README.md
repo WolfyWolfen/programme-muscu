@@ -1,6 +1,6 @@
-# 💪 Mon Programme — PWA Musculation
+# 💪 Ma Séance — Suivi & Progression (PWA Musculation)
 
-> **Version 3.3.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 3.3.3** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -8,14 +8,14 @@ Application web progressive (PWA) de suivi d'entraînement musculaire. Accessibl
 
 ## ✨ Fonctionnalités
 
-- **Éditeur & Partage de Programmes** — Créez, dupliquez et exportez/importez individuellement vos programmes sportifs
-- **Surcharge Progressive & Records (PR)** — Rappel de la séance précédente sous chaque série, calcul du 1RM estimé (Epley), détection automatique des PR 🏆 et notes persistantes par exercice
+- **Créateur & Partage de Programmes** — Catalogue intégré (+50 exercices classés par muscle), templates rapides (*PPL, Upper/Lower, Full Body*), accordéons, duplication et export/import individuel en `.json`
+- **Surcharge Progressive & Records (PR)** — Rappel de la séance précédente sous chaque série, boutons rapides `-1 / +1 rep`, calcul du 1RM estimé (Epley), détection automatique des PR 🏆 et notes persistantes par exercice
+- **6 Thèmes de Couleurs Personnalisables** — *Cyan Cyber, Rouge Titan, Émeraude, Or Olympique, Ultra Violet, Bleu Glace* mémorisés par profil
 - **Statistiques Avancées** — Courbe de progression par exercice (Charge & 1RM), calendrier d'assiduité (28 jours), série de semaines (*Streak* 🔥) et volume global
 - **Confort Mobile & Anti-veille** — Maintien de l'écran allumé (*Wake Lock*), chronos basés sur l'horloge système (résistants à la mise en veille), calculateur de disques 🧮 et barre de progression de séance
-- **Multi-profils & Isolation** — Données strictement liées au profil choisi, sans mélange
+- **Multi-profils & Isolation** — Données et thème strictement liés au profil choisi, sans mélange
 - **Historique complet** — Suppression par séance, exercice ou série isolée
-- **100% offline** — Service Worker + cache, aucune connexion requise après le 1er chargement
-- **Mise à jour automatique** — Les nouveaux ajouts arrivent sans action de l'utilisateur
+- **100% offline & Mise à jour automatique** — Service Worker + cache avec rechargement transparent dès qu'une nouvelle version est publiée
 
 ---
 
@@ -27,7 +27,7 @@ Cette application n'est pas sur les stores classiques (Play Store / App Store). 
 1. Ouvrez ce lien dans **Chrome** sur votre téléphone : [https://wolfywolfen.github.io/programme-muscu/](https://wolfywolfen.github.io/programme-muscu/)
 2. Appuyez sur les **3 petits points ⋮** en haut à droite du navigateur.
 3. Appuyez sur **Ajouter à l'écran d'accueil** (ou "Installer l'application").
-4. Confirmez, et l'icône "Mon Programme" s'ajoutera à vos applications !
+4. Confirmez, et l'icône **"Ma Séance"** s'ajoutera à vos applications !
 
 ### 🍎 iOS (Obligatoire avec Safari) — [Voir le guide illustré](MANUEL_IOS.md)
 1. Ouvrez ce lien **uniquement dans Safari** (l'installation PWA est bloquée par Apple sur les autres navigateurs) : [https://wolfywolfen.github.io/programme-muscu/](https://wolfywolfen.github.io/programme-muscu/)
@@ -49,13 +49,23 @@ Lors de la toute première utilisation, l'application génèrera un programme pa
 - **Jeudi** : Jambes (Quadri & Ischios)
 - **Vendredi** : Full Haut du Corps
 
-Ce programme n'est qu'un point de départ. Vous êtes libre de le supprimer, de l'éditer ou de créer le vôtre de A à Z (Nom du jour, Poids, Exercices, Séries et Repos) !
+Ce programme n'est qu'un point de départ. Vous êtes libre de le supprimer, de l'éditer ou de créer le vôtre de A à Z (Nom du jour, Icône, Exercices du catalogue ou personnalisés, Séries et Repos) !
 
 ---
 
-## 🛠 Stack technique
+## 🛠 Stack & Architecture Modulaire
 
-`HTML` · `CSS` · `JavaScript vanilla` · `localStorage` · `Service Worker` · `PWA Manifest`
+`HTML5` · `CSS3 Modulaire` · `JavaScript Vanilla (ES6+)` · `localStorage` · `Service Worker` · `PWA Manifest`
+
+- **`css/`** :
+  - `variables.css` : Variables `:root`, thèmes de couleurs (`[data-theme]`) et animations
+  - `layout.css` : Structure `#app`, en-tête, navigation flottante, toasts et modales centrées
+  - `home.css` : Bannière du programme actif, cartes des journées et badges
+  - `workout.css` : Séance active, séries/reps, steppers, chronomètres et calculateur de disques
+  - `stats-history.css` : Historique, calendrier d'assiduité (heatmap 28j) et graphiques
+  - `editor.css` : Créateur de programme, accordéons, templates et catalogue d'exercices
+- **`js/`** :
+  - `utils.js`, `storage.js`, `state.js`, `ui.js`, `editor.js`, `workout.js` + `app.js`
 
 ---
 
@@ -67,22 +77,28 @@ Toutes les données sont stockées **localement sur votre appareil** (localStora
 
 ## 🔄 Mettre à jour l'application (pour les développeurs)
 
-1. Modifier le code source (`app.js`, `style.css`, `index.html`...)
-2. Ouvrir `sw.js` et incrémenter `CACHE_NAME` (ex: `v2.1` → `v2.2`)
+1. Modifier le code source (`app.js`, `js/*.js`, `css/*.css`, `index.html`...)
+2. Ouvrir `sw.js` et incrémenter `CACHE_NAME` (ex: `v3.3.2` → `v3.3.3`)
 3. Faire de même pour `APP_VERSION` dans `app.js`
-4. `git add . && git commit -m "Version X.Y" && git push`
+4. `git add . && git commit -m "Version X.Y.Z" && git push`
 
-Les utilisateurs recevront la mise à jour automatiquement au prochain lancement de l'application.
+Les utilisateurs recevront la mise à jour automatiquement au prochain lancement de l'application (ou en touchant le numéro de version en bas de l'accueil).
 
 ---
 
 ## 📜 Historique des versions (Changelog)
 
+- **v3.3.3 : Architecture CSS Modulaire** :
+  - Découpage de l'ancien `style.css` (2 200+ lignes) en 6 fichiers thématiques dans `css/` (`variables.css`, `layout.css`, `home.css`, `workout.css`, `stats-history.css`, `editor.css`) et centrage fixe de la modale de thème.
+- **v3.3.2 : Thèmes de Couleurs Personnalisables** :
+  - Ajout d'un sélecteur de thème dans l'en-tête avec **6 palettes complètes** (*Cyan Cyber, Rouge Titan, Émeraude, Or Olympique, Ultra Violet, Bleu Glace*) sauvegardées par profil.
+- **v3.3.1 : Identité "Ma Séance"** :
+  - Renommage de l'application en **Ma Séance — Suivi & Progression** (`index.html`, `manifest.json`, `ui.js`).
 - **v3.3.0 : Créateur de Programme Avancé (Catalogue, Modèles & Accordéons)** :
-  - **Catalogue d'exercices intégré (`📚`)** : Plus de 35 exercices classés par groupe musculaire avec barre de recherche instantanée. Conserve les mêmes identifiants (`id`) entre vos différents programmes pour que votre historique de poids et vos PR suivent automatiquement.
+  - **Catalogue d'exercices intégré (`📚`)** : Plus de 50 exercices classés par groupe musculaire avec barre de recherche instantanée. Conserve les mêmes identifiants (`id`) entre vos différents programmes pour que votre historique de poids et vos PR suivent automatiquement.
   - **Modèles rapides (`⚡`)** : Chargement en 1 clic des structures **PPL (3j)**, **Upper / Lower (4j)** ou **Full Body (3j)**.
-  - **Confort d'édition** : Journées pliables/dépliables en accordéon avec estimation de durée en direct, duplication d'une journée entière, sélecteur visuel d'icône sportive par jour et boutons tactiles `- / +` sur les séries et temps de repos (`-15s / +15s`).
-- **v3.2.1** : Hotfix mobile pour la largeur de la case `REPS` (déplacement du bouton `+1 rep` sous la série et suppression des flèches natives des champs numériques pour éviter que le nombre soit tronqué sous le texte `REPS`).
+  - **Confort d'édition** : Journées pliables/dépliables en accordéon avec estimation de durée en direct, duplication d'une journée entière ou d'un exercice, sélecteur visuel d'icône sportive par jour et boutons tactiles `- / +` sur les séries et temps de repos (`-15s / +15s`).
+- **v3.2.1 à v3.2.6** : Hotfix mobile pour la largeur de la case `REPS`, ajout des boutons `-1 rep` (rouge) / `+1 rep` (cyan) alignés sous `REPS`, affichage sur 2 lignes de la performance précédente, icônes sportives SVG cohérentes par jour et rechargement forcé du cache Service Worker.
 - **v3.2.0 : Refonte Esthétique Glassmorphism & Animations** :
   - **Design & Lumière** : Fond atmosphérique avec halos cyan/violet, cartes en verre dépoli (*glassmorphism*) avec bordures spéculaires et barre de navigation flottante en capsule (*Floating Pill Dock*).
   - **Animations & Retours Visuels** : Apparition fluide en cascade des cartes, mise en lumière complète des séries cochées, badge `✓ Terminé` quand un exercice est complété et jauge de progression visuelle sur le chronomètre de repos.
