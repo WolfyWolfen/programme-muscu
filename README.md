@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 3.2.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 3.2.1** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -78,6 +78,7 @@ Les utilisateurs recevront la mise à jour automatiquement au prochain lancement
 
 ## 📜 Historique des versions (Changelog)
 
+- **v3.2.1** : Hotfix mobile pour la largeur de la case `REPS` (déplacement du bouton `+1 rep` sous la série et suppression des flèches natives des champs numériques pour éviter que le nombre soit tronqué sous le texte `REPS`).
 - **v3.2.0 : Refonte Esthétique Glassmorphism & Animations** :
   - **Design & Lumière** : Fond atmosphérique avec halos cyan/violet, cartes en verre dépoli (*glassmorphism*) avec bordures spéculaires et barre de navigation flottante en capsule (*Floating Pill Dock*).
   - **Animations & Retours Visuels** : Apparition fluide en cascade des cartes, mise en lumière complète des séries cochées, badge `✓ Terminé` quand un exercice est complété et jauge de progression visuelle sur le chronomètre de repos.

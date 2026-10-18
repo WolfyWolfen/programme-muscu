@@ -329,9 +329,9 @@ window.renderSets = function (exId) {
         const checkedClass = set.checked ? 'completed' : '';
         const prBadge = isSetPR(exId, set) ? '<span class="pr-badge" title="Record Personnel !">🏆 PR</span>' : '';
         const prev = prevSets[i];
-        const prevHint = (prev && (prev.kg || prev.reps))
-            ? `<div class="set-prev-hint">Précédent : <b>${escapeHTML(prev.kg || 0)}kg × ${escapeHTML(prev.reps || 0)}</b> ${prBadge}</div>`
-            : (prBadge ? `<div class="set-prev-hint">${prBadge}</div>` : '');
+        const prevText = (prev && (prev.kg || prev.reps))
+            ? `<span>Précédent : <b>${escapeHTML(prev.kg || 0)}kg × ${escapeHTML(prev.reps || 0)}</b></span>`
+            : '';
 
         const checkIcon = set.checked ?
             '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' :
@@ -342,13 +342,12 @@ window.renderSets = function (exId) {
                 <div class="set-row" id="set-row-${exId}-${i}">
                     <div class="set-number" onclick="openPlateCalculator('${escapeHTML(set.kg || 60)}')" title="Calculer les disques pour cette charge">${i + 1}</div>
                     <div class="input-group">
-                        <input type="number" step="0.5" placeholder="Poids" value="${escapeHTML(set.kg)}" oninput="updateInput('${exId}', ${i}, 'kg', this.value)">
+                        <input type="number" inputmode="decimal" step="0.5" placeholder="Poids" value="${escapeHTML(set.kg)}" oninput="updateInput('${exId}', ${i}, 'kg', this.value)">
                         <span>KG</span>
                     </div>
                     <div class="input-group">
-                        <input type="number" placeholder="Reps" value="${escapeHTML(set.reps)}" oninput="updateInput('${exId}', ${i}, 'reps', this.value)">
+                        <input type="number" inputmode="numeric" placeholder="Reps" value="${escapeHTML(set.reps)}" oninput="updateInput('${exId}', ${i}, 'reps', this.value)">
                         <span>REPS</span>
-                        <button class="btn-step-rep" onclick="stepInput('${exId}', ${i}, 'reps', 1)" title="+1 rep">+1</button>
                     </div>
                     <button class="btn-check ${checkedClass}" onclick="toggleCheck('${exId}', ${i})">
                         ${checkIcon}
@@ -360,7 +359,11 @@ window.renderSets = function (exId) {
                         </svg>
                     </button>
                 </div>
-                ${prevHint}
+                <div class="set-prev-hint">
+                    ${prevText}
+                    ${prBadge}
+                    <button class="btn-step-rep" onclick="stepInput('${exId}', ${i}, 'reps', 1)" title="Ajouter 1 répétition">+1 rep</button>
+                </div>
             </div>
         `;
     });
