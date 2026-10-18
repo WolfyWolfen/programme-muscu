@@ -126,7 +126,7 @@ function renderHome() {
         const exCount = (getProgExo(day.id) || []).length;
         html += `
             <div class="day-card stagger-item" style="animation-delay: ${idx * 45}ms;" onclick="startWorkout('${day.id}')">
-                <div class="day-icon">${day.icon}</div>
+                <div class="day-icon">${getDayIcon(day)}</div>
                 <div class="day-info">
                     <h2>${escapeHTML(day.name)}</h2>
                     <p>${escapeHTML(day.focus)}</p>
