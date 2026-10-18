@@ -1,6 +1,6 @@
 {
-  "name": "Mon Programme",
-  "short_name": "Workout",
+  "name": "Ma Séance",
+  "short_name": "Ma Séance",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#0d0f12",

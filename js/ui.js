@@ -22,7 +22,7 @@ function switchView(view, param = null) {
         if (btn) btn.classList.add('active');
         backBtn.classList.add('hidden');
         
-        if (view === 'home') headerSubtitle.textContent = 'Progression & Hypertrophie';
+        if (view === 'home') headerSubtitle.textContent = 'Suivi & Progression';
         else if (view === 'history') headerSubtitle.textContent = 'Historique des Séances';
         else if (view === 'stats') headerSubtitle.textContent = 'Statistiques';
         
