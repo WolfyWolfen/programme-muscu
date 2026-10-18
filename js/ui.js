@@ -146,9 +146,33 @@ function renderHome() {
         `;
     });
 
-    html += `<div class="app-version-footer">Mon Programme PWA — ${APP_VERSION}</div>`;
+    html += `<div class="app-version-footer" onclick="forceAppUpdate()" title="Toucher pour vérifier les mises à jour" style="cursor: pointer;">Mon Programme PWA — ${APP_VERSION} ↻</div>`;
     mainContent.innerHTML = html;
 }
+
+/**
+ * Force la suppression des caches du Service Worker et recharge l'application depuis le serveur.
+ */
+window.forceAppUpdate = async function() {
+    if (typeof showToast === 'function') showToast('Recherche de mise à jour...');
+    try {
+        if ('serviceWorker' in navigator) {
+            const regs = await navigator.serviceWorker.getRegistrations();
+            for (const reg of regs) {
+                await reg.unregister();
+            }
+        }
+        if ('caches' in window) {
+            const keys = await caches.keys();
+            for (const key of keys) {
+                await caches.delete(key);
+            }
+        }
+    } catch (e) {
+        console.warn(e);
+    }
+    window.location.reload();
+};
 
 /**
  * Met à jour la modale de sélection de profil (Utilisateurs et Export/Import JSON).

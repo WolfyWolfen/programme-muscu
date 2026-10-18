@@ -1,6 +1,6 @@
 // sw.js (Service Worker)
 
-const CACHE_NAME = 'prog-muscu-v3.2.1';
+const CACHE_NAME = 'prog-muscu-v3.2.2';
 const urlsToCache = [
     './',
     './index.html',
@@ -21,7 +21,8 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => {
-                return cache.addAll(urlsToCache);
+                const freshRequests = urlsToCache.map(url => new Request(url, { cache: 'reload' }));
+                return cache.addAll(freshRequests);
             })
     );
     // Prendre le contrôle immédiatement sans attendre que l'app soit fermée
