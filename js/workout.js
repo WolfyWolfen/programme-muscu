@@ -330,7 +330,7 @@ window.renderSets = function (exId) {
         const prBadge = isSetPR(exId, set) ? '<span class="pr-badge" title="Record Personnel !">🏆 PR</span>' : '';
         const prev = prevSets[i];
         const prevText = (prev && (prev.kg || prev.reps))
-            ? `<span>Précédent : <b>${escapeHTML(prev.kg || 0)}kg × ${escapeHTML(prev.reps || 0)}</b></span>`
+            ? `<span>Précédent :<br><b style="color: var(--text);">${escapeHTML(prev.kg || 0)}kg × ${escapeHTML(prev.reps || 0)}</b></span>`
             : '';
 
         const checkIcon = set.checked ?
