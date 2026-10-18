@@ -78,6 +78,25 @@ function estimateDay(dayId) {
 }
 
 /**
+ * Renvoie une chaîne indiquant quand une journée a été effectuée pour la dernière fois.
+ * @param {string} dayId - L'identifiant de la journée
+ * @returns {string|null} Texte formaté (ex: "Aujourd'hui", "Hier", "Il y a 4j")
+ */
+function getLastDoneText(dayId) {
+    if (!historyData || historyData.length === 0) return null;
+    const matches = historyData.filter(h => h.dayId === dayId).sort((a, b) => b.date - a.date);
+    if (matches.length === 0) return null;
+    const lastDate = new Date(matches[0].date);
+    const now = new Date();
+    lastDate.setHours(0, 0, 0, 0);
+    now.setHours(0, 0, 0, 0);
+    const diffDays = Math.round((now - lastDate) / (24 * 3600 * 1000));
+    if (diffDays <= 0) return "Fait aujourd'hui";
+    if (diffDays === 1) return "Fait hier";
+    return `Il y a ${diffDays} j`;
+}
+
+/**
  * Construit et affiche la vue "Accueil" (Liste des jours d'entraînement du programme actif).
  */
 function renderHome() {
@@ -86,12 +105,14 @@ function renderHome() {
     const activeProg = getActiveProgram();
 
     html += `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 12px; background: var(--surface-light); border-radius: var(--radius-md); border: 1px solid var(--border);">
+        <div class="active-prog-banner">
             <div>
-                <h3 style="color: var(--primary); font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">Programme Actif</h3>
-                <p style="color: var(--text); font-size: 16px; margin-top: 4px; font-weight: 600;">${escapeHTML(activeProg.name)}</p>
+                <div class="active-prog-label">
+                    <span class="pulse-dot"></span> Programme Actif
+                </div>
+                <p class="active-prog-name">${escapeHTML(activeProg.name)}</p>
             </div>
-            <button onclick="switchView('programs')" style="background: none; border: none; color: var(--text-sec); cursor: pointer; padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; background: var(--bg);">
+            <button onclick="switchView('programs')" class="btn-gear" title="Gérer les programmes">
                 <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="3"></circle>
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -99,21 +120,33 @@ function renderHome() {
             </button>
         </div>`;
 
-    progDays.forEach(day => {
+    progDays.forEach((day, idx) => {
         const estimated = estimateDay(day.id);
+        const lastDone = getLastDoneText(day.id);
+        const exCount = (getProgExo(day.id) || []).length;
         html += `
-            <div class="day-card" onclick="startWorkout('${day.id}')">
+            <div class="day-card stagger-item" style="animation-delay: ${idx * 45}ms;" onclick="startWorkout('${day.id}')">
                 <div class="day-icon">${day.icon}</div>
                 <div class="day-info">
                     <h2>${escapeHTML(day.name)}</h2>
                     <p>${escapeHTML(day.focus)}</p>
-                    <span class="day-duration">⏱ ${estimated}</span>
+                    <div class="day-badges">
+                        <span class="day-duration">
+                            <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            ${estimated}
+                        </span>
+                        <span class="day-ex-count">${exCount} exo${exCount > 1 ? 's' : ''}</span>
+                        ${lastDone ? `<span class="day-last-done">${lastDone}</span>` : ''}
+                    </div>
+                </div>
+                <div class="day-chevron">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
             </div>
         `;
     });
 
-    html += `<div style="text-align: center; margin-top: 32px; font-size: 13px; color: var(--text-sec); opacity: 0.6; font-weight: 600;">Mon Programme PWA — ${APP_VERSION}</div>`;
+    html += `<div class="app-version-footer">Mon Programme PWA — ${APP_VERSION}</div>`;
     mainContent.innerHTML = html;
 }
 
@@ -197,26 +230,34 @@ function renderProgramsList() {
     const activeId = getActiveProgram().id;
     let html = '<div class="programs-list-container">';
 
-    programs.forEach(p => {
+    const starSvg = '<svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--primary)" stroke-width="2" fill="rgba(0, 229, 255, 0.2)" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+    const docSvg = '<svg viewBox="0 0 24 24" width="24" height="24" stroke="var(--text-sec)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>';
+    const copySvg = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+    const shareSvg = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>';
+
+    programs.forEach((p, idx) => {
         const isActive = p.id === activeId;
         html += `
-            <div class="day-card" style="border: ${isActive ? '2px solid var(--primary)' : '1px solid var(--border)'}; flex-direction: column; align-items: flex-start; gap: 12px; cursor: default; padding-bottom: 16px;">
+            <div class="day-card stagger-item" style="animation-delay: ${idx * 45}ms; border: ${isActive ? '1.5px solid var(--primary)' : '1px solid var(--border)'}; flex-direction: column; align-items: flex-start; gap: 12px; cursor: default; padding-bottom: 16px;">
                 <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="day-icon">${isActive ? '⭐' : '📄'}</div>
-                        <h3 style="font-size: 18px;">${escapeHTML(p.name)}</h3>
+                        <div class="day-icon" style="width: 48px; height: 48px; margin-right: 0;">${isActive ? starSvg : docSvg}</div>
+                        <div>
+                            <h3 style="font-size: 17px; font-weight: 700;">${escapeHTML(p.name)}</h3>
+                            <span style="font-size: 12px; color: var(--text-sec);">${p.days.length} jour${p.days.length > 1 ? 's' : ''}</span>
+                        </div>
                     </div>
                     <div style="display: flex; gap: 6px;">
-                        <button class="btn-icon-action" onclick="duplicateProgram('${p.id}')" title="Dupliquer ce programme">📋</button>
-                        <button class="btn-icon-action" onclick="exportSingleProgram('${p.id}')" title="Partager / Exporter ce programme (JSON)">📤</button>
+                        <button class="btn-icon-action" onclick="duplicateProgram('${p.id}')" title="Dupliquer ce programme">${copySvg}</button>
+                        <button class="btn-icon-action" onclick="exportSingleProgram('${p.id}')" title="Partager / Exporter ce programme (JSON)">${shareSvg}</button>
                     </div>
                 </div>
-                <div style="display: flex; gap: 10px; width: 100%; margin-top: 8px;">
-                    ${!isActive ? `<button class="btn-primary" style="flex: 1; padding: 12px; font-size: 14px; border-radius: var(--radius-sm);" onclick="selectProgram('${p.id}')">Activer</button>` : `<button class="btn-primary" style="flex: 1; padding: 12px; font-size: 14px; border-radius: var(--radius-sm); opacity: 0.5; cursor: default;">Actif</button>`}
+                <div style="display: flex; gap: 10px; width: 100%; margin-top: 4px;">
+                    ${!isActive ? `<button class="btn-primary" style="flex: 1; padding: 12px; font-size: 14px; border-radius: var(--radius-sm);" onclick="selectProgram('${p.id}')">Activer</button>` : `<button class="btn-primary" style="flex: 1; padding: 12px; font-size: 14px; border-radius: var(--radius-sm); opacity: 0.55; cursor: default;">✓ Actif</button>`}
                     
-                    <button class="btn-secondary" style="flex: 1; padding: 12px; font-size: 14px; border-radius: var(--radius-sm); background: var(--surface); color: var(--text); border: 1px solid var(--border);" onclick="switchView('editor', '${p.id}')">Éditer</button>
+                    <button class="btn-secondary" style="flex: 1; padding: 12px; font-size: 14px; border-radius: var(--radius-sm); background: var(--surface-light); color: var(--text); border: 1px solid var(--border); font-weight: 600; cursor: pointer;" onclick="switchView('editor', '${p.id}')">Éditer</button>
                     
-                    ${programs.length > 1 ? `<button class="btn-danger" style="padding: 12px; border-radius: var(--radius-sm); border: none; background: var(--danger); color: white;" onclick="deleteProgram('${p.id}')">
+                    ${programs.length > 1 ? `<button class="btn-danger" style="padding: 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255, 23, 68, 0.3); background: rgba(255, 23, 68, 0.15); color: var(--danger); cursor: pointer;" onclick="deleteProgram('${p.id}')">
                         <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -229,7 +270,7 @@ function renderProgramsList() {
 
     html += `
         <button class="btn-add-set" style="margin-top: 16px;" onclick="switchView('editor', 'new')">+ Créer un nouveau programme</button>
-        <button class="btn-add-set" style="margin-top: 10px; border-style: solid;" onclick="document.getElementById('import-prog-input').click()">📥 Importer un programme partagé (.json)</button>
+        <button class="btn-add-set" style="margin-top: 10px; border-style: solid;" onclick="document.getElementById('import-prog-input').click()">Importer un programme partagé (.json)</button>
         <input type="file" id="import-prog-input" accept=".json" style="display: none;" onchange="importSingleProgram(event)">
     </div>`;
 

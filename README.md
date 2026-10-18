@@ -1,6 +1,6 @@
 # 💪 Mon Programme — PWA Musculation
 
-> **Version 3.1.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
+> **Version 3.2.0** · [Ouvrir l'application](https://wolfywolfen.github.io/programme-muscu/)
 
 Application web progressive (PWA) de suivi d'entraînement musculaire. Accessible sur Android et iOS, installable comme une app native, **sans compte ni connexion**, fonctionne 100% hors-ligne.
 
@@ -78,6 +78,10 @@ Les utilisateurs recevront la mise à jour automatiquement au prochain lancement
 
 ## 📜 Historique des versions (Changelog)
 
+- **v3.2.0 : Refonte Esthétique Glassmorphism & Animations** :
+  - **Design & Lumière** : Fond atmosphérique avec halos cyan/violet, cartes en verre dépoli (*glassmorphism*) avec bordures spéculaires et barre de navigation flottante en capsule (*Floating Pill Dock*).
+  - **Animations & Retours Visuels** : Apparition fluide en cascade des cartes, mise en lumière complète des séries cochées, badge `✓ Terminé` quand un exercice est complété et jauge de progression visuelle sur le chronomètre de repos.
+  - **Accueil enrichi** : Affichage du nombre d'exercices et de la date relative de dernière séance (*Fait aujourd'hui / Il y a X j*) sur chaque journée, et remplacement des emojis techniques par des icônes vectorielles SVG.
 - **v3.1.0 : Surcharge Progressive, Stats par Exercice & Confort Mobile** :
   - **Séance** : Affichage de la performance précédente sous chaque série, détection automatique des Records Personnels (`🏆 PR`) et du Max historique, notes persistantes par exercice, bouton rapide `+1 rep`, calculateur de disques (`🧮`), barre de progression en direct et maintien de l'écran allumé (*Screen Wake Lock*).
   - **Chronomètres** : Timer de repos recalibré sur l'horloge système (insensible à la mise en veille du téléphone) et démarrage automatique du chrono de séance dès la première série validée.

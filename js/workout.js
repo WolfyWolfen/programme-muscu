@@ -120,75 +120,82 @@ window.startWorkout = function(dayId) {
 
     const timerBanner = document.createElement('div');
     timerBanner.className = 'session-timer-banner';
-    timerBanner.innerHTML = `
-        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 6 12 12 16 14"></polyline>
-        </svg>
-        <span>Durée séance</span>
-        <span id="session-timer-display" class="session-timer-value">--:--</span>
-        <button class="plate-calc-trigger" onclick="openPlateCalculator(60)" title="Calculateur de disques">🧮</button>
-        <button id="session-start-btn" class="session-start-btn" onclick="toggleSessionTimer()">▶</button>
-    `;
-    container.appendChild(timerBanner);
+        const calcSvg = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="10" x2="8" y2="10"></line><line x1="12" y1="10" x2="12" y2="10"></line><line x1="16" y1="10" x2="16" y2="10"></line><line x1="8" y1="14" x2="8" y2="14"></line><line x1="12" y1="14" x2="12" y2="14"></line><line x1="16" y1="14" x2="16" y2="14"></line><line x1="8" y1="18" x2="8" y2="18"></line><line x1="12" y1="18" x2="16" y2="18"></line></svg>';
 
-    const progressBanner = document.createElement('div');
-    progressBanner.className = 'workout-progress-container';
-    progressBanner.innerHTML = `
-        <div class="workout-progress-header">
-            <span>Progression séance</span>
-            <span id="workout-progress-text">0 / 0 séries (0%)</span>
-        </div>
-        <div class="workout-progress-bar">
-            <div id="workout-progress-fill" class="workout-progress-fill" style="width: 0%;"></div>
-        </div>
-    `;
-    container.appendChild(progressBanner);
-
-    exercises.forEach((ex) => {
-        const targetSets = ex.sets ?? 3;
-        const prevSets = (lastWorkout && lastWorkout.data[ex.id])
-            ? lastWorkout.data[ex.id]
-            : (refWeights[dayId] && refWeights[dayId][ex.id] ? refWeights[dayId][ex.id] : []);
-        lastSessionRefData[ex.id] = prevSets;
-
-        let defaultSets = [];
-        if (drafts[dayId] && drafts[dayId][ex.id]) {
-            defaultSets = drafts[dayId][ex.id];
-        } else if (refWeights[dayId] && refWeights[dayId][ex.id]) {
-            defaultSets = refWeights[dayId][ex.id].map(s => ({ ...s, checked: false }));
-        } else if (lastWorkout && lastWorkout.data[ex.id]) {
-            defaultSets = lastWorkout.data[ex.id].map(s => ({ ...s, checked: false }));
-        } else {
-            defaultSets = [];
-        }
-
-        while (defaultSets.length < targetSets) {
-            const last = defaultSets[defaultSets.length - 1];
-            defaultSets.push({ kg: last?.kg || '', reps: last?.reps || '', checked: false });
-        }
-
-        currentWorkoutData[ex.id] = defaultSets;
-        const best = getHistoricalBest(ex.id);
-        const noteVal = exNotes[ex.id] || '';
-
-        const card = document.createElement('div');
-        card.className = 'exercise-card';
-        card.innerHTML = `
-            <div class="exercise-header">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
-                    <h3>${escapeHTML(ex.name)}</h3>
-                    ${best.maxKg > 0 ? `<span class="ex-best-badge" title="Meilleur 1RM estimé : ${best.max1RM} kg">🏆 Max: ${best.maxKg}kg</span>` : ''}
-                </div>
-                <input type="text" class="ex-note-input" placeholder="📝 Ajouter une note (réglage banc, ressenti...)" value="${escapeHTML(noteVal)}" oninput="saveExerciseNote('${ex.id}', this.value)">
-            </div>
-            <div class="sets-container" id="sets-${ex.id}"></div>
-            <button class="btn-add-set" onclick="addSet('${ex.id}')">+ Ajouter une série</button>
+        timerBanner.innerHTML = `
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Durée séance</span>
+            <span id="session-timer-display" class="session-timer-value">--:--</span>
+            <button class="plate-calc-trigger" onclick="openPlateCalculator(60)" title="Calculateur de disques">${calcSvg}</button>
+            <button id="session-start-btn" class="session-start-btn" onclick="toggleSessionTimer()">▶</button>
         `;
-        container.appendChild(card);
+        container.appendChild(timerBanner);
 
-        setTimeout(() => renderSets(ex.id), 0);
-    });
+        const progressBanner = document.createElement('div');
+        progressBanner.className = 'workout-progress-container';
+        progressBanner.innerHTML = `
+            <div class="workout-progress-header">
+                <span>Progression séance</span>
+                <span id="workout-progress-text">0 / 0 séries (0%)</span>
+            </div>
+            <div class="workout-progress-bar">
+                <div id="workout-progress-fill" class="workout-progress-fill" style="width: 0%;"></div>
+            </div>
+        `;
+        container.appendChild(progressBanner);
+
+        exercises.forEach((ex, idx) => {
+            const targetSets = ex.sets ?? 3;
+            const prevSets = (lastWorkout && lastWorkout.data[ex.id])
+                ? lastWorkout.data[ex.id]
+                : (refWeights[dayId] && refWeights[dayId][ex.id] ? refWeights[dayId][ex.id] : []);
+            lastSessionRefData[ex.id] = prevSets;
+
+            let defaultSets = [];
+            if (drafts[dayId] && drafts[dayId][ex.id]) {
+                defaultSets = drafts[dayId][ex.id];
+            } else if (refWeights[dayId] && refWeights[dayId][ex.id]) {
+                defaultSets = refWeights[dayId][ex.id].map(s => ({ ...s, checked: false }));
+            } else if (lastWorkout && lastWorkout.data[ex.id]) {
+                defaultSets = lastWorkout.data[ex.id].map(s => ({ ...s, checked: false }));
+            } else {
+                defaultSets = [];
+            }
+
+            while (defaultSets.length < targetSets) {
+                const last = defaultSets[defaultSets.length - 1];
+                defaultSets.push({ kg: last?.kg || '', reps: last?.reps || '', checked: false });
+            }
+
+            currentWorkoutData[ex.id] = defaultSets;
+            const best = getHistoricalBest(ex.id);
+            const noteVal = exNotes[ex.id] || '';
+
+            const card = document.createElement('div');
+            card.className = 'exercise-card stagger-item';
+            card.id = `card-${ex.id}`;
+            card.style.animationDelay = `${idx * 50}ms`;
+            card.innerHTML = `
+                <div class="exercise-header">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                        <h3>${escapeHTML(ex.name)}</h3>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <span id="ex-done-badge-${ex.id}" class="ex-done-badge hidden">✓ Terminé</span>
+                            ${best.maxKg > 0 ? `<span class="ex-best-badge" title="Meilleur 1RM estimé : ${best.max1RM} kg">🏆 Max: ${best.maxKg}kg</span>` : ''}
+                        </div>
+                    </div>
+                    <input type="text" class="ex-note-input" placeholder="Ajouter une note (réglage banc, ressenti...)" value="${escapeHTML(noteVal)}" oninput="saveExerciseNote('${ex.id}', this.value)">
+                </div>
+                <div class="sets-container" id="sets-${ex.id}"></div>
+                <button class="btn-add-set" onclick="addSet('${ex.id}')">+ Ajouter une série</button>
+            `;
+            container.appendChild(card);
+
+            setTimeout(() => renderSets(ex.id), 0);
+        });
 
     const saveBtn = document.createElement('button');
     saveBtn.className = 'btn-save-workout';
@@ -310,6 +317,12 @@ window.renderSets = function (exId) {
 
     const sets = currentWorkoutData[exId];
     const prevSets = lastSessionRefData[exId] || [];
+    const allChecked = sets.length > 0 && sets.every(s => s.checked);
+    const card = document.getElementById(`card-${exId}`);
+    const doneBadge = document.getElementById(`ex-done-badge-${exId}`);
+    if (card) card.classList.toggle('exercise-completed', allChecked);
+    if (doneBadge) doneBadge.classList.toggle('hidden', !allChecked);
+
     let html = '';
 
     sets.forEach((set, i) => {
@@ -325,7 +338,7 @@ window.renderSets = function (exId) {
             '<svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle></svg>';
 
         html += `
-            <div class="set-block">
+            <div class="set-block ${checkedClass}">
                 <div class="set-row" id="set-row-${exId}-${i}">
                     <div class="set-number" onclick="openPlateCalculator('${escapeHTML(set.kg || 60)}')" title="Calculer les disques pour cette charge">${i + 1}</div>
                     <div class="input-group">
@@ -389,6 +402,7 @@ window.saveWorkout = function () {
 // Timer de Repos basé sur l'horloge système (résistant à la mise en veille mobile)
 let timerInterval = null;
 let timerSeconds = 0;
+let timerTotalSeconds = 90;
 let timerEndTime = null;
 let isTimerRunning = false;
 
@@ -400,6 +414,11 @@ function updateTimerDisplay() {
     const m = Math.floor(timerSeconds / 60).toString().padStart(2, '0');
     const s = (timerSeconds % 60).toString().padStart(2, '0');
     if (timerDisplay) timerDisplay.textContent = `${m}:${s}`;
+    const fill = document.getElementById('timer-progress-fill');
+    if (fill && timerTotalSeconds > 0) {
+        const pct = Math.max(0, Math.min(100, (timerSeconds / timerTotalSeconds) * 100));
+        fill.style.width = `${pct}%`;
+    }
 }
 
 // Fonction utilitaire pour générer le WAV du double bip en mémoire
@@ -490,6 +509,7 @@ function tickRestTimer() {
 
 window.startTimer = function (seconds) {
     timerSeconds = seconds;
+    timerTotalSeconds = Math.max(seconds, 1);
     timerEndTime = Date.now() + seconds * 1000;
     isTimerRunning = true;
     if (timerBar) timerBar.classList.remove('hidden');
@@ -507,6 +527,7 @@ window.adjustTimer = function (seconds) {
     } else {
         timerSeconds = Math.max(0, timerSeconds + seconds);
     }
+    if (timerSeconds > timerTotalSeconds) timerTotalSeconds = timerSeconds;
     updateTimerDisplay();
 };
 
