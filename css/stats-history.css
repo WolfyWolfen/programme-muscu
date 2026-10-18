@@ -1,0 +1,235 @@
+/* css/stats-history.css — Historique des séances, Calendrier Heatmap & Graphiques */
+
+/* History */
+.history-item {
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+
+.history-date {
+    font-size: 12px;
+    color: var(--text-sec);
+    margin-bottom: 4px;
+    text-transform: capitalize;
+}
+
+.history-title {
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.history-stats {
+    font-size: 13px;
+    color: var(--text-sec);
+    line-height: 1.6;
+}
+
+/* History Details */
+.history-details {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.history-ex-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 6px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.history-details li {
+    font-size: 13px;
+    color: var(--text-sec);
+    margin-bottom: 4px;
+    padding-left: 12px;
+    border-left: 2px solid var(--surface-light);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-delete-history {
+    background: transparent;
+    border: none;
+    color: var(--text-sec);
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+
+.history-item>.btn-delete-history {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+}
+
+.history-ex-title>.btn-delete-history {
+    position: static;
+    margin-left: 8px;
+}
+
+.history-details li>.btn-delete-history {
+    position: static;
+    margin-left: auto;
+}
+
+.btn-delete-history:hover,
+.btn-delete-history:active {
+    color: var(--danger);
+}
+
+.history-1rm-tag {
+    font-size: 10px;
+    color: var(--secondary);
+    background: rgba(var(--secondary-rgb), 0.12);
+    border: 1px solid rgba(var(--secondary-rgb), 0.25);
+    padding: 1px 6px;
+    border-radius: 8px;
+    margin-left: 4px;
+}
+
+/* =============================================
+   STATISTIQUES & GRAPHIQUES
+   ============================================= */
+.stats-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.stat-card {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 8px 0;
+}
+
+.chart-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    height: 150px;
+    gap: 16px;
+    padding-top: 20px;
+    border-bottom: 2px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-bottom: 2px;
+}
+
+.chart-container::-webkit-scrollbar {
+    display: none;
+}
+
+.chart-bar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 44px;
+    height: 100%;
+}
+
+.chart-bar {
+    width: 24px;
+    background: linear-gradient(0deg, var(--primary-dim), var(--primary));
+    border-radius: 4px 4px 0 0;
+    flex-shrink: 0;
+    transition: height 0.6s ease;
+}
+
+.chart-label {
+    font-size: 10px;
+    color: var(--text-sec);
+    margin-top: 8px;
+    white-space: nowrap;
+}
+
+.chart-value {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.heatmap-cell {
+    height: 28px;
+    border-radius: 6px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--text-sec);
+    font-weight: 600;
+}
+
+.heatmap-cell.active {
+    background: var(--primary-dim);
+    border-color: var(--primary);
+    color: var(--primary);
+    font-weight: 800;
+    box-shadow: 0 0 8px rgba(var(--primary-rgb), 0.2);
+}
+
+.stats-ex-select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    outline: none;
+}
+
+.stats-ex-select:focus {
+    border-color: var(--primary);
+}

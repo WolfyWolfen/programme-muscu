@@ -1,0 +1,123 @@
+/* css/variables.css — Variables globales, Thèmes de couleurs & Animations */
+
+:root {
+    --bg: #090b0e;
+    --surface: rgba(22, 26, 34, 0.85);
+    --surface-light: rgba(36, 42, 54, 0.9);
+    --primary: #00e5ff;
+    --primary-mid: #00b0ff;
+    --primary-rgb: 0, 229, 255;
+    --primary-dim: rgba(var(--primary-rgb), 0.14);
+    --secondary: #b388ff;
+    --secondary-rgb: 179, 136, 255;
+    --success: #00e676;
+    --danger: #ff1744;
+    --text: #f8fafc;
+    --text-sec: #94a3b8;
+    --border: rgba(255, 255, 255, 0.08);
+    --border-top: rgba(255, 255, 255, 0.15);
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --radius-sm: 10px;
+    --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+:root[data-theme="crimson"] {
+    --primary: #ff3d5a;
+    --primary-mid: #ff1744;
+    --primary-rgb: 255, 61, 90;
+    --primary-dim: rgba(255, 61, 90, 0.14);
+    --secondary: #ff9100;
+    --secondary-rgb: 255, 145, 0;
+}
+
+:root[data-theme="emerald"] {
+    --primary: #00e676;
+    --primary-mid: #00c853;
+    --primary-rgb: 0, 230, 118;
+    --primary-dim: rgba(0, 230, 118, 0.14);
+    --secondary: #00e5ff;
+    --secondary-rgb: 0, 229, 255;
+}
+
+:root[data-theme="gold"] {
+    --primary: #ffab00;
+    --primary-mid: #ff6d00;
+    --primary-rgb: 255, 171, 0;
+    --primary-dim: rgba(255, 171, 0, 0.14);
+    --secondary: #ff5252;
+    --secondary-rgb: 255, 82, 82;
+}
+
+:root[data-theme="violet"] {
+    --primary: #b388ff;
+    --primary-mid: #7c4dff;
+    --primary-rgb: 179, 136, 255;
+    --primary-dim: rgba(179, 136, 255, 0.14);
+    --secondary: #ff4081;
+    --secondary-rgb: 255, 64, 129;
+}
+
+:root[data-theme="cobalt"] {
+    --primary: #448aff;
+    --primary-mid: #2979ff;
+    --primary-rgb: 68, 138, 255;
+    --primary-dim: rgba(68, 138, 255, 0.14);
+    --secondary: #18ffff;
+    --secondary-rgb: 24, 255, 255;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg);
+    background-image:
+        radial-gradient(circle at 90% 5%, rgba(var(--primary-rgb), 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 10% 85%, rgba(var(--secondary-rgb), 0.1) 0%, transparent 50%);
+    background-attachment: fixed;
+    color: var(--text);
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    user-select: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Animations d'entrée en cascade */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stagger-item {
+    animation: fadeSlideUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(-8px);
+    }
+    60% {
+        transform: translateX(8px);
+    }
+    80% {
+        transform: translateX(-4px);
+    }
+}

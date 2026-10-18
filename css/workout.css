@@ -1,0 +1,561 @@
+/* css/workout.css — Séance en cours, Séries, Steppers, Chronomètre & Calculateur de disques */
+
+/* Exercise List */
+.exercise-card {
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    border-top-color: var(--border-top);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.exercise-card.exercise-completed {
+    border-color: rgba(0, 230, 118, 0.35);
+    box-shadow: 0 8px 28px rgba(0, 230, 118, 0.08);
+}
+
+.exercise-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+}
+
+.exercise-header h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.3;
+}
+
+.ex-done-badge {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--success);
+    background: rgba(0, 230, 118, 0.14);
+    border: 1px solid rgba(0, 230, 118, 0.35);
+    padding: 3px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+/* Sets */
+.set-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.set-number {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-sec);
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.set-number:active {
+    background: var(--primary-dim);
+    color: var(--primary);
+}
+
+.input-group {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    background: var(--surface-light);
+    border-radius: var(--radius-sm);
+    padding: 0 8px;
+    gap: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.input-group:focus-within {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.06);
+}
+
+.input-group input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 16px;
+    font-weight: 700;
+    padding: 11px 0;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+    -moz-appearance: textfield;
+}
+
+.input-group input::-webkit-outer-spin-button,
+.input-group input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.input-group span {
+    color: var(--text-sec);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    flex-shrink: 0;
+}
+
+.btn-check {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface-light);
+    color: var(--text-sec);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.btn-check:active {
+    transform: scale(0.9);
+}
+
+.btn-check.completed {
+    background: linear-gradient(135deg, rgba(0, 230, 118, 0.25), rgba(0, 200, 83, 0.15)) !important;
+    color: var(--success);
+    border: 1px solid rgba(0, 230, 118, 0.45);
+    box-shadow: 0 0 14px rgba(0, 230, 118, 0.2);
+}
+
+.btn-remove-set {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--text-sec);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+
+.btn-remove-set:hover {
+    color: var(--danger);
+    background: rgba(255, 23, 68, 0.12);
+    opacity: 1;
+}
+
+.btn-add-set {
+    width: 100%;
+    padding: 13px;
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-sec);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.2s;
+}
+
+.btn-add-set:hover,
+.btn-add-set:active {
+    background: var(--surface-light);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--primary-mid));
+    color: #050709;
+    border: none;
+    font-family: inherit;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(var(--primary-rgb), 0.25);
+    transition: transform 0.15s, box-shadow 0.2s;
+}
+
+.btn-primary:active {
+    transform: scale(0.97);
+}
+
+.btn-save-workout {
+    width: 100%;
+    padding: 18px;
+    background: linear-gradient(100deg, var(--primary) 0%, var(--primary-mid) 55%, var(--secondary) 100%);
+    color: #050709;
+    border: none;
+    border-radius: var(--radius-lg);
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    margin-top: 12px;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(var(--primary-rgb), 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-save-workout:active {
+    transform: scale(0.98);
+}
+
+/* Session Timer Banner */
+.session-timer-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(var(--primary-rgb), 0.22);
+    border-top-color: rgba(var(--primary-rgb), 0.35);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    color: var(--text-sec);
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+.session-timer-banner svg {
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.session-timer-value {
+    margin-left: auto;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 1px;
+}
+
+.session-start-btn {
+    background: var(--primary-dim);
+    border: 1px solid rgba(var(--primary-rgb), 0.35);
+    color: var(--primary);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.15s, background 0.2s;
+}
+
+.session-start-btn:active {
+    transform: scale(0.9);
+    background: rgba(var(--primary-rgb), 0.28);
+}
+
+/* Timer Bar (Repos) */
+.timer-bar {
+    position: fixed;
+    bottom: calc(92px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 32px);
+    max-width: 420px;
+    background: rgba(26, 31, 41, 0.96);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(var(--primary-rgb), 0.25);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65);
+    z-index: 150;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s;
+}
+
+.timer-progress-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.timer-progress-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.25s linear;
+}
+
+.timer-bar.hidden {
+    transform: translate(-50%, 150%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.timer-time {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary);
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 12px rgba(var(--primary-rgb), 0.25);
+}
+
+.timer-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.timer-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.1s, background 0.2s;
+}
+
+.timer-btn:active {
+    transform: scale(0.9);
+    background: var(--surface-light);
+}
+
+.timer-btn.main {
+    background: var(--primary-dim);
+    color: var(--primary);
+    border-color: rgba(var(--primary-rgb), 0.35);
+}
+
+.timer-btn.close {
+    background: rgba(255, 23, 68, 0.15);
+    color: var(--danger);
+    border-color: rgba(255, 23, 68, 0.3);
+}
+
+/* Progression de séance, PR, Notes & Steppers */
+.workout-progress-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    margin-bottom: 20px;
+}
+
+.workout-progress-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-sec);
+    margin-bottom: 6px;
+}
+
+.workout-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--surface-light);
+    border-radius: 99px;
+    overflow: hidden;
+}
+
+.workout-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    border-radius: 99px;
+    transition: width 0.3s ease;
+}
+
+.ex-best-badge {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffd54f;
+    background: rgba(255, 213, 79, 0.12);
+    border: 1px solid rgba(255, 213, 79, 0.3);
+    padding: 3px 8px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.ex-note-input {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: var(--bg);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-sec);
+    font-family: inherit;
+    font-size: 12px;
+    outline: none;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.ex-note-input:focus {
+    border-color: var(--primary);
+    color: var(--text);
+}
+
+.set-block {
+    margin-bottom: 10px;
+    padding: 6px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    transition: background 0.25s, border-color 0.25s;
+}
+
+.set-block.completed {
+    background: rgba(0, 230, 118, 0.06);
+    border-color: rgba(0, 230, 118, 0.2);
+}
+
+.set-block.completed .set-number {
+    background: rgba(0, 230, 118, 0.2);
+    border-color: rgba(0, 230, 118, 0.4);
+    color: var(--success);
+}
+
+.set-block .set-row {
+    margin-bottom: 2px;
+}
+
+.set-prev-hint {
+    font-size: 11px;
+    color: var(--text-sec);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.95;
+}
+
+.hint-spacer-num {
+    width: 26px;
+    flex-shrink: 0;
+}
+
+.hint-col-kg {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    line-height: 1.2;
+}
+
+.hint-col-reps {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.hint-spacer-actions {
+    width: 82px;
+    flex-shrink: 0;
+}
+
+.pr-badge {
+    font-size: 10px;
+    font-weight: 800;
+    color: #000;
+    background: linear-gradient(90deg, #ffd54f, #ffb300);
+    padding: 1px 6px;
+    border-radius: 8px;
+}
+
+.btn-step-rep {
+    flex: 1;
+    background: rgba(var(--primary-rgb), 0.1);
+    border: 1px solid rgba(var(--primary-rgb), 0.3);
+    color: var(--primary);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 0;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.12s, background 0.2s;
+}
+
+.btn-step-rep.minus {
+    background: rgba(255, 23, 68, 0.12);
+    border-color: rgba(255, 23, 68, 0.35);
+    color: var(--danger);
+}
+
+.btn-step-rep:active {
+    transform: scale(0.92);
+    background: var(--primary-dim);
+}
+
+.btn-step-rep.minus:active {
+    background: rgba(255, 23, 68, 0.25);
+}
+
+.plate-calc-trigger {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.plate-badge {
+    background: var(--primary-dim);
+    border: 1px solid rgba(var(--primary-rgb), 0.35);
+    color: var(--primary);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+}

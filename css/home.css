@@ -1,0 +1,211 @@
+/* css/home.css — Accueil, Bannière Programme Actif, Cartes des Jours & Liste Programmes */
+
+.active-prog-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.08) 0%, rgba(var(--secondary-rgb), 0.05) 100%);
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(var(--primary-rgb), 0.18);
+    border-top-color: rgba(var(--primary-rgb), 0.32);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.active-prog-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.pulse-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--primary);
+    box-shadow: 0 0 8px var(--primary);
+}
+
+.active-prog-name {
+    color: var(--text);
+    font-size: 16px;
+    margin-top: 3px;
+    font-weight: 700;
+}
+
+.btn-gear {
+    border: 1px solid var(--border);
+    color: var(--text-sec);
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    background: rgba(9, 11, 14, 0.6);
+}
+
+.btn-gear:hover,
+.btn-gear:active {
+    color: var(--primary);
+    border-color: var(--primary);
+    transform: rotate(35deg);
+}
+
+/* Day Cards */
+.day-card {
+    background: var(--surface);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    border-top-color: var(--border-top);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.2s, box-shadow 0.2s;
+}
+
+.day-card:hover {
+    border-color: rgba(var(--primary-rgb), 0.3);
+}
+
+.day-card:active {
+    transform: scale(0.975);
+}
+
+.day-icon {
+    font-size: 28px;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.18), rgba(var(--secondary-rgb), 0.12));
+    border: 1px solid rgba(var(--primary-rgb), 0.22);
+    color: var(--primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 16px;
+    flex-shrink: 0;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.day-icon svg {
+    width: 26px;
+    height: 26px;
+}
+
+.day-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.day-info h2 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    letter-spacing: -0.2px;
+}
+
+.day-info p {
+    font-size: 13px;
+    color: var(--text-sec);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.day-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.day-duration {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-dim);
+    border: 1px solid rgba(var(--primary-rgb), 0.2);
+    border-radius: 20px;
+    padding: 2px 9px;
+}
+
+.day-ex-count {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-sec);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 2px 9px;
+}
+
+.day-last-done {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--secondary);
+    background: rgba(var(--secondary-rgb), 0.12);
+    border: 1px solid rgba(var(--secondary-rgb), 0.22);
+    border-radius: 20px;
+    padding: 2px 9px;
+}
+
+.day-chevron {
+    color: var(--text-sec);
+    opacity: 0.45;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s, opacity 0.2s, color 0.2s;
+}
+
+.day-card:hover .day-chevron {
+    opacity: 1;
+    color: var(--primary);
+    transform: translateX(2px);
+}
+
+.app-version-footer {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 12px;
+    color: var(--text-sec);
+    opacity: 0.5;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.btn-icon-action {
+    background: var(--surface-light);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+.btn-icon-action:active {
+    background: var(--primary-dim);
+    border-color: var(--primary);
+}
